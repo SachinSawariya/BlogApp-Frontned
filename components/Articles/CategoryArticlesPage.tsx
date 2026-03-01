@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCategoryArticles } from "./hooks/useCategoryArticles";
 import ArticleCard from "@/shared/Card/ArticleCard";
 import SharedPagination from "@/shared/Pagination/Pagination";
-import Loading from "@/shared/Loading/Loading";
+import CategoryArticlesSkeleton from "./CategoryArticlesSkeleton";
 import {
   FiArrowLeft,
   FiAlertCircle,
@@ -48,15 +48,7 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Loading
-          size="large"
-          message={`Loading ${categoryName.toLowerCase()} articles...`}
-          className="h-screen"
-        />
-      </div>
-    );
+    return <CategoryArticlesSkeleton viewMode={viewMode} />;
   }
 
   return (
@@ -68,69 +60,65 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-white opacity-5 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              <button
-                onClick={handleBack}
-                className="hidden md:flex group items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl hover:bg-white/20 transition-all duration-300 font-medium"
-              >
-                <FiArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
-                <span>Back</span>
-              </button>
-
-              <div className="h-8 w-px bg-white/30"></div>
-
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight">
-                  {categoryName}
-                </h1>
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-white/90 font-medium">
-                      {pagination.totalArticles.toLocaleString()}{" "}
-                      {pagination.totalArticles === 1 ? "article" : "articles"}
-                    </span>
-                  </div>
-                  <span className="text-white/60">•</span>
-                  <span className="text-white/80">
-                    {pagination.totalPages}{" "}
-                    {pagination.totalPages === 1 ? "page" : "pages"}
-                  </span>
-                </div>
+        <div className="relative container mx-auto px-4 py-12">
+          <div className="flex justify-between items-start">
+            {/* Left Side - Title and Description */}
+            <div className="text-left flex-1">
+              <div className="flex items-center space-x-3 mb-6">
+                <button
+                  onClick={handleBack}
+                  className="hidden md:flex group items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl hover:bg-white/20 transition-all duration-300 font-medium"
+                >
+                  <FiArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-300" />
+                  <span>Back</span>
+                </button>
+                
+                <div className="h-8 w-px bg-white/30"></div>
+                
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               </div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                {categoryName}
+              </h1>
+              <p className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed">
+                Browse through {pagination.totalArticles.toLocaleString()}{" "}
+                {pagination.totalArticles === 1 ? "article" : "articles"} in the {categoryName} category.
+                Explore insights, tutorials, and expert content.
+              </p>
             </div>
 
-            <div className="hidden md:flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-1">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                  viewMode === "grid"
-                    ? "bg-white text-blue-600 shadow-lg"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                <FiGrid className="w-4 h-4" />
-                <span>Grid</span>
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                  viewMode === "list"
-                    ? "bg-white text-blue-600 shadow-lg"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                <FiList className="w-4 h-4" />
-                <span>List</span>
-              </button>
+            {/* Right Side - View Mode Toggle - Desktop Only */}
+            <div className="hidden lg:block">
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-300 ${
+                    viewMode === "grid"
+                      ? "bg-white text-blue-600 shadow-lg"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  <FiGrid className="w-5 h-5" />
+                  <span className="font-medium">Grid View</span>
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-lg transition-all duration-300 ${
+                    viewMode === "list"
+                      ? "bg-white text-blue-600 shadow-lg"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  <FiList className="w-5 h-5" />
+                  <span className="font-medium">List View</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="container mx-auto px-4 py-10">
         {articles.length === 0 ? (
           <ExploreOtherCategory
             categoryName={categoryName}
@@ -147,7 +135,7 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
             >
               {articles.map((article, index) => (
                 <div
-                  key={article.id}
+                  key={article.id || index}
                   style={{
                     animationDelay: `${index * 100}ms`,
                     animation: "fadeInUp 0.6s ease-out forwards",

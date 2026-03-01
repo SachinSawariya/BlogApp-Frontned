@@ -1,29 +1,46 @@
+import React from 'react';
+
 const ArticlesSkeleton = () => {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="text-center">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mx-auto mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto mb-8"></div>
-        </div>
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="mb-12">
+    <div className="container mx-auto px-4 py-10">
+      <div className="space-y-20">
+        {[...Array(3)].map((_, sectionIndex) => (
+          <div key={sectionIndex} className="space-y-6">
+            {/* Section Header Skeleton */}
             <div className="flex justify-between items-center mb-6">
-              <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-              <div className="h-6 bg-gray-200 rounded w-20"></div>
+              <div className="h-8 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
+              <div className="h-6 w-20 bg-gray-100 rounded-full animate-pulse"></div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(3)].map((_, j) => (
-                <div
-                  key={j}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
-                >
+
+            {/* Articles Grid Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(3)].map((_, articleIndex) => (
+                <div key={articleIndex} className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse">
+                  {/* Image Skeleton */}
                   <div className="h-48 bg-gray-200"></div>
+                  
+                  {/* Content Skeleton */}
                   <div className="p-6">
-                    <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
-                    <div className="h-6 bg-gray-200 rounded w-full mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-16"></div>
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="h-6 w-20 bg-gray-200 rounded-full animate-pulse"></div>
+                      <div className="h-6 w-24 bg-gray-100 rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div className="h-6 bg-gray-200 rounded mb-2 animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded w-4/5 mb-4 animate-pulse"></div>
+                    
+                    <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4 animate-pulse"></div>
+                    
+                    {/* Stats Bar Skeleton */}
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                      <div className="flex items-center space-x-3">
+                        <div className="h-4 w-8 bg-gray-100 rounded animate-pulse"></div>
+                        <div className="h-4 w-8 bg-gray-100 rounded animate-pulse"></div>
+                        <div className="h-4 w-8 bg-gray-100 rounded animate-pulse"></div>
+                      </div>
+                      <div className="h-4 w-16 bg-gray-100 rounded animate-pulse"></div>
+                    </div>
                   </div>
                 </div>
               ))}

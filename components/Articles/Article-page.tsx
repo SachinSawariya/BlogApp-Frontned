@@ -8,71 +8,8 @@ export default function ArticlesPageComponent() {
   const { sections, isLoading, error } = useArticles();
   const [globalViewMode, setGlobalViewMode] = useState<"grid" | "list">("grid");
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        <div className="container mx-auto px-4 py-12">
-          <ArticlesSkeleton />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="relative inline-block mb-8">
-              <div className="w-32 h-32 bg-gradient-to-br from-red-100 to-pink-100 rounded-full flex items-center justify-center mx-auto">
-                <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-2xl">!</span>
-                </div>
-              </div>
-              <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center animate-pulse">
-                <span className="text-white font-bold text-sm">✕</span>
-              </div>
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Oops! Something went wrong
-            </h2>
-            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-              We encountered an error while loading the articles. Please try
-              again later.
-            </p>
-            <div className="bg-red-50 border-l-4 border-red-400 p-6 rounded-lg text-left">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg
-                    className="h-6 w-6 text-red-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700 font-medium">
-                    Error Details
-                  </p>
-                  <p className="text-sm text-red-600 mt-1">{error.message}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Hero Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="absolute inset-0">
@@ -82,7 +19,6 @@ export default function ArticlesPageComponent() {
 
         <div className="relative container mx-auto px-4 py-12">
           <div className="flex justify-between items-start">
-            {/* Left Side - Title and Description */}
             <div className="text-left flex-1">
               <div className="flex items-center space-x-3 mb-6">
                 <FiBookOpen className="w-8 h-8" />
@@ -97,7 +33,6 @@ export default function ArticlesPageComponent() {
               </p>
             </div>
 
-            {/* Right Side - View Mode Toggle - Desktop Only */}
             <div className="hidden lg:block">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-1">
                 <button
@@ -128,29 +63,31 @@ export default function ArticlesPageComponent() {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-10">
-        <div className="space-y-20">
-          {sections.map((section, index) => (
-            <div
-              key={index}
-              style={{
-                animationDelay: `${index * 200}ms`,
-                animation: "fadeInUp 0.8s ease-out forwards",
-                opacity: 0,
-              }}
-            >
-              <ArticleSection
-                category={section.category}
-                articles={section.articles}
-                viewMode={globalViewMode}
-              />
-            </div>
-          ))}
-        </div>
+        {isLoading ? (
+          <ArticlesSkeleton />
+        ) : (
+          <div className="space-y-20">
+            {sections.map((section, index) => (
+              <div
+                key={index}
+                style={{
+                  animationDelay: `${index * 200}ms`,
+                  animation: "fadeInUp 0.8s ease-out forwards",
+                  opacity: 0,
+                }}
+              >
+                <ArticleSection
+                  category={section.category}
+                  articles={section.articles}
+                  viewMode={globalViewMode}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Custom Animation Styles */}
       <style jsx>{`
         @keyframes fadeInUp {
           from {

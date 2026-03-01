@@ -20,6 +20,14 @@ export const apiList = {
     url: () => `/${baseUrl}/blogs/get-sections`,
     method: 'GET'
   },
+  getFeaturedArticles: {
+    url: () => `/${baseUrl}/blogs/featured-articles`,
+    method: 'GET'
+  },
+  getBlogPost: {
+    url: (slug) => `/${baseUrl}/blogs/article/${slug}`,
+    method: 'GET'
+  },
   getCategoryArticles: {
     url: (slug, page = 1, limit = 12) => `/${baseUrl}/blogs/articles/${slug}?page=${page}&limit=${limit}`,
     method: 'GET'
@@ -40,6 +48,10 @@ export const apiList = {
   // Categories
   getCategoriesList: {
     url: () => `/${baseUrl}/categories/list`,
+    method: 'GET'
+  },
+  getTopCategories: {
+    url: () => `/${baseUrl}/categories/top-categories`,
     method: 'GET'
   },
   // getCategory: {

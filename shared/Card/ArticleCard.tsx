@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FiClock, FiHeart, FiMessageSquare, FiShare2, FiArrowLeft } from "react-icons/fi";
+import { FiClock, FiHeart, FiMessageSquare, FiShare2, FiArrowLeft, FiEye } from "react-icons/fi";
 import { useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 
@@ -14,6 +14,7 @@ interface ArticleCardProps {
   imageUrl?: string;
   likes?: number;
   comments?: number;
+  views?: number;
   className?: string;
   onClick?: (e: MouseEvent<HTMLDivElement>) => void;
   children?: ReactNode;
@@ -29,6 +30,7 @@ const ArticleCard = ({
   imageUrl, 
   likes: initialLikes = 0,
   comments = 0,
+  views = 0,
   className = "",
   onClick,
   children,
@@ -60,6 +62,10 @@ const ArticleCard = ({
         text: excerpt,
         url: window.location.href,
       }).catch(console.error);
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(window.location.href);
+      // You could show a toast notification here
     }
   };
 
@@ -69,16 +75,23 @@ const ArticleCard = ({
     if (onClick) {
       onClick(e);
     } else {
-      router.push(`/blog/${id}`);
+      router.push(`/articles/${id}`);
     }
+  };
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toString();
   };
 
   return (
     <div 
       className={`${
         actualViewMode === "grid"
-          ? "bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1"
-          : "bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 cursor-pointer transform hover:scale-[1.02]"
+          ? "bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 group"
+          : "bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden transition-all duration-300 cursor-pointer transform hover:scale-[1.02] group"
       } ${className}`}
       onClick={handleClick}
       role="article"
@@ -87,13 +100,23 @@ const ArticleCard = ({
     >
       {actualViewMode === "grid" ? (
         <>
-          <div className="relative h-48 bg-gray-100 overflow-hidden group">
+          <div className="relative h-48 bg-gray-100 overflow-hidden">
             {imageUrl ? (
               <img 
                 src={imageUrl} 
                 alt={title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
+                onError={(e) => {
+                  // Fallback to gradient if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = `
+                    <div class="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center">
+                      ${category}
+                    </div>
+                  `;
+                }}
               />
             ) : (
               <div 
@@ -103,57 +126,107 @@ const ArticleCard = ({
                 {category}
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-              <div className="flex space-x-3 text-white">
-                <button 
-                  onClick={handleLike}
-                  className="flex items-center space-x-1 hover:text-red-400 transition-colors"
-                  aria-label={isLiked ? 'Unlike this article' : 'Like this article'}
-                >
-                  <FiHeart className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
-                  <span className="text-sm font-medium">{currentLikes}</span>
-                </button>
-                <div className="flex items-center space-x-1">
-                  <FiMessageSquare className="w-5 h-5" />
-                  <span className="text-sm font-medium">{comments}</span>
+            
+            {/* Overlay with actions on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-4">
+              <div className="flex space-x-3 text-white w-full justify-between">
+                <div className="flex space-x-3">
+                  <button 
+                    onClick={handleLike}
+                    className="flex items-center space-x-1 hover:text-red-400 transition-colors bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg"
+                    aria-label={isLiked ? 'Unlike this article' : 'Like this article'}
+                  >
+                    <FiHeart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+                    <span className="text-xs font-medium">{formatNumber(currentLikes)}</span>
+                  </button>
+                  <div className="flex items-center space-x-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg">
+                    <FiMessageSquare className="w-4 h-4" />
+                    <span className="text-xs font-medium">{formatNumber(comments)}</span>
+                  </div>
+                  {views > 0 && (
+                    <div className="flex items-center space-x-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg">
+                      <FiEye className="w-4 h-4" />
+                      <span className="text-xs font-medium">{formatNumber(views)}</span>
+                    </div>
+                  )}
                 </div>
                 <button 
                   onClick={handleShare}
-                  className="ml-auto hover:text-blue-300 transition-colors"
+                  className="hover:text-blue-300 transition-colors bg-white/20 backdrop-blur-sm p-1.5 rounded-lg"
                   aria-label="Share this article"
                 >
-                  <FiShare2 className="w-5 h-5" />
+                  <FiShare2 className="w-4 h-4" />
                 </button>
               </div>
             </div>
           </div>
+          
           <div className="p-6">
-            <div className="flex justify-between items-start">
-              <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full">
+            <div className="flex justify-between items-start mb-3">
+              <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors">
                 {category}
               </span>
-              <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
+              <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
                 <FiClock className="mr-1 w-3.5 h-3.5" />
                 <span>{readTime} min read</span>
               </div>
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mt-3 mb-2 line-clamp-2 leading-tight">
+            
+            <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
               {title}
             </h3>
-            <p className="text-gray-600 text-sm mb-4 line-clamp-3">{excerpt}</p>
+            
+            <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+              {excerpt}
+            </p>
+            
+            {/* Stats bar */}
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+              <div className="flex items-center space-x-3 text-xs text-gray-500">
+                <span className="flex items-center">
+                  <FiHeart className="w-3.5 h-3.5 mr-1" />
+                  {formatNumber(currentLikes)}
+                </span>
+                <span className="flex items-center">
+                  <FiMessageSquare className="w-3.5 h-3.5 mr-1" />
+                  {formatNumber(comments)}
+                </span>
+                {views > 0 && (
+                  <span className="flex items-center">
+                    <FiEye className="w-3.5 h-3.5 mr-1" />
+                    {formatNumber(views)}
+                  </span>
+                )}
+              </div>
+              
+              <button className="text-blue-600 hover:text-blue-700 font-medium text-xs flex items-center group opacity-0 group-hover:opacity-100 transition-opacity">
+                Read More
+                <FiArrowLeft className="ml-1 w-3.5 h-3.5 rotate-180 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+            
             {children}
           </div>
         </>
       ) : (
         <div className="flex flex-col md:flex-row h-full">
           {/* Left Side - Image */}
-          <div className="md:w-1/3 lg:w-2/5 h-48 md:h-auto relative overflow-hidden group">
+          <div className="md:w-1/3 lg:w-2/5 h-48 md:h-auto relative overflow-hidden">
             {imageUrl ? (
               <img 
                 src={imageUrl} 
                 alt={title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  target.parentElement!.innerHTML = `
+                    <div class="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center">
+                      ${category}
+                    </div>
+                  `;
+                }}
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center">
@@ -166,10 +239,10 @@ const ArticleCard = ({
           <div className="md:w-2/3 lg:w-3/5 p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full">
+                <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors">
                   {category}
                 </span>
-                <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded">
+                <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
                   <FiClock className="mr-1 w-3.5 h-3.5" />
                   <span>{readTime} min read</span>
                 </div>
@@ -193,12 +266,18 @@ const ArticleCard = ({
                   aria-label={isLiked ? 'Unlike this article' : 'Like this article'}
                 >
                   <FiHeart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
-                  <span>{currentLikes}</span>
+                  <span>{formatNumber(currentLikes)}</span>
                 </button>
                 <div className="flex items-center space-x-1">
                   <FiMessageSquare className="w-4 h-4" />
-                  <span>{comments}</span>
+                  <span>{formatNumber(comments)}</span>
                 </div>
+                {views > 0 && (
+                  <div className="flex items-center space-x-1">
+                    <FiEye className="w-4 h-4" />
+                    <span>{formatNumber(views)}</span>
+                  </div>
+                )}
                 <button 
                   onClick={handleShare}
                   className="hover:text-blue-500 transition-colors"
