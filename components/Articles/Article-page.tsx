@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FiGrid, FiList, FiBookOpen, FiTrendingUp } from "react-icons/fi";
 
 export default function ArticlesPageComponent() {
-  const { sections, isLoading, error } = useArticles();
+  const { sections, isLoading } = useArticles();
   const [globalViewMode, setGlobalViewMode] = useState<"grid" | "list">("grid");
 
   return (

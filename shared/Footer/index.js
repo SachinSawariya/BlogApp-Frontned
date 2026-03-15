@@ -4,19 +4,19 @@ import { FiGithub, FiTwitter, FiLinkedin, FiMail } from "react-icons/fi";
 
 const footerNav = [
   { name: 'Home', href: '/' },
-  { name: 'Articles', href: '/blog' },
+  { name: 'Articles', href: '/articles' },
   { name: 'Categories', href: '/categories' },
-  { name: 'About', href: '/about' },
+  { name: 'About', href: '/about-us' },
   { name: 'Contact', href: '/contact' },
   { name: 'Privacy Policy', href: '/privacy' },
   { name: 'Terms of Service', href: '/terms' },
 ];
 
 const socialLinks = [
-  { name: 'GitHub', href: 'https://github.com', icon: FiGithub },
+  { name: 'GitHub', href: 'https://github.com/SachinSawariya', icon: FiGithub },
   { name: 'Twitter', href: 'https://twitter.com', icon: FiTwitter },
-  { name: 'LinkedIn', href: 'https://linkedin.com', icon: FiLinkedin },
-  { name: 'Email', href: 'mailto:contact@aifordevs.com', icon: FiMail },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/sachin-kumar-a91a62223/', icon: FiLinkedin },
+  { name: 'Email', href: 'mailto:sachin.developer32@gmail.com', icon: FiMail },
 ];
 
 const Footer = () => {

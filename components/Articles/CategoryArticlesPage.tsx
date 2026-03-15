@@ -8,7 +8,6 @@ import CategoryArticlesSkeleton from "./CategoryArticlesSkeleton";
 import {
   FiArrowLeft,
   FiAlertCircle,
-  FiFilter,
   FiGrid,
   FiList,
 } from "react-icons/fi";
@@ -143,12 +142,13 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
                   }}
                 >
                   <ArticleCard
-                    id={article.id}
+                    id={article._id}
                     title={article.title}
+                    slug={article.slug}
                     category={categoryName}
                     excerpt={article.content}
                     readTime={article.readTime}
-                    imageUrl={article.imageUrl}
+                    imageUrl={article.coverImage}
                     likes={article.likes}
                     comments={article.comments}
                     viewMode={viewMode}

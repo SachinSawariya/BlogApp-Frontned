@@ -9,8 +9,9 @@ interface ArticleCardProps {
   id: string | number;
   title: string;
   category: string;
+  slug: string;
   excerpt: string;
-  readTime: string;
+  readTime: string | number | undefined;
   imageUrl?: string;
   likes?: number;
   comments?: number;
@@ -25,6 +26,7 @@ const ArticleCard = ({
   id, 
   title, 
   category, 
+  slug,
   excerpt, 
   readTime, 
   imageUrl, 
@@ -75,7 +77,7 @@ const ArticleCard = ({
     if (onClick) {
       onClick(e);
     } else {
-      router.push(`/articles/${id}`);
+      router.push(`/articles/${slug}`);
     }
   };
 

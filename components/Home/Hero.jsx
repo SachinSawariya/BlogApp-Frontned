@@ -2,40 +2,49 @@
 import { useRouter } from "next/navigation";
 import { FiArrowRight, FiBookOpen, FiPlusCircle } from "react-icons/fi";
 
-const Hero = () => {
+export default function Hero() {
   const router = useRouter();
 
+  const handleExplore = () => router.push("/articles");
+  const handleCreate = () => router.push("/admin/create-blog");
+
   return (
-    <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-20">
-      <div className="container mx-auto px-4 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+    <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 lg:py-32 overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-white opacity-5 transform skew-x-12 translate-x-20"></div>
+      
+      <div className="container relative z-10 mx-auto px-4 text-center">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-[1.1] tracking-tight">
           Explore the World of <br className="hidden md:block" />
           <span className="text-yellow-300">AI & Development</span>
         </h1>
-        <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
+        
+        <p className="text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-blue-50 leading-relaxed font-medium">
           Stay updated with the latest tutorials, guides, and insights in AI, machine learning, and software development.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        
+        <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
           <button 
-            onClick={() => router.push("/blog")}
-            className="bg-white text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 transition-all duration-300 transform hover:scale-105"
+            onClick={handleExplore}
+            className="group bg-white text-blue-700 hover:bg-blue-50 px-10 py-4 rounded-full font-bold text-lg flex items-center gap-3 transition-all duration-300 shadow-xl shadow-blue-900/20 hover:scale-105 active:scale-95"
           >
             <FiBookOpen className="text-xl" />
             Explore Articles
-            <FiArrowRight className="ml-1" />
+            <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
           </button>
+          
           <button 
-            onClick={() => router.push("/admin/create-blog")}
-            className="bg-yellow-400 text-gray-900 hover:bg-yellow-300 px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 transition-all duration-300 transform hover:scale-105"
+            onClick={handleCreate}
+            className="group bg-yellow-400 text-gray-900 hover:bg-yellow-300 px-10 py-4 rounded-full font-bold text-lg flex items-center gap-3 transition-all duration-300 shadow-xl shadow-yellow-500/10 hover:scale-105 active:scale-95"
           >
             <FiPlusCircle className="text-xl" />
             Write Article
           </button>
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
+      
+      {/* Bottom wave-like fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-50 to-transparent"></div>
     </section>
   );
-};
-
-export default Hero;
+}

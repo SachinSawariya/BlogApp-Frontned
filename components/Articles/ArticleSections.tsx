@@ -53,7 +53,7 @@ export const ArticleSection = ({
       }`}>
         {articles.map((article, index) => (
           <div
-            key={article.id}
+            key={article._id}
             style={{ 
               animationDelay: `${index * 100}ms`,
               animation: "fadeInUp 0.6s ease-out forwards",
@@ -61,12 +61,13 @@ export const ArticleSection = ({
             }}
           >
             <ArticleCard
-              id={article.id}
+              id={article._id}
               title={article.title}
               category={category}
+              slug={article.slug}
               excerpt={article.content}
               readTime={article.readTime}
-              imageUrl={article.imageUrl}
+              imageUrl={article.coverImage}
               likes={article.likes}
               viewMode={viewMode}
             />

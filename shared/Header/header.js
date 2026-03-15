@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { FiSearch, FiBookmark } from "react-icons/fi";
+import { FiSearch, FiBookmark, FiLock } from "react-icons/fi";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -22,6 +23,8 @@ const mobileNavItems = [
 
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -37,6 +40,14 @@ const Header = () => {
     }
   };
 
+  const isActive = (href) => {
+    if (href === '/' && pathname === '/') return true;
+    if (href !== '/' && pathname.startsWith(href)) return true;
+    return false;
+  };
+
+  const isAdmin = user && user.role === 'admin';
+
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
@@ -51,16 +62,40 @@ const Header = () => {
             </Link>
           </div>
 
-          <nav className="hidden md:flex space-x-4 md:space-x-3 lg:space-x-8">
-            {navItems.map((item) => (
+          <nav className="hidden md:flex items-center space-x-4 md:space-x-3 lg:space-x-8">
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link 
+                  key={item.name}
+                  href={item.href} 
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    active 
+                      ? "text-blue-600 font-bold" 
+                      : "text-gray-700 hover:text-blue-600"
+                  }`}
+                >
+                  {item.name}
+                  {active && (
+                    <div className="h-0.5 bg-blue-600 w-full mt-0.5 rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
+            
+            {isAdmin && (
               <Link 
-                key={item.name}
-                href={item.href} 
-                className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium"
+                href="/admin/dashboard" 
+                className={`flex items-center gap-1.5 px-3 py-2 text-sm font-bold transition-colors ${
+                  pathname.startsWith('/admin') 
+                    ? "text-indigo-600" 
+                    : "text-gray-700 hover:text-indigo-600"
+                }`}
               >
-                {item.name}
+                <FiLock className="mb-0.5" />
+                Admin
               </Link>
-            ))}
+            )}
           </nav>
 
           <div className="flex items-center space-x-4">
@@ -113,16 +148,38 @@ const Header = () => {
       {/* Mobile menu */}
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`} id="mobile-menu">
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {mobileNavItems.map((item) => (
+          {mobileNavItems.map((item) => {
+            const active = isActive(item.href);
+            return (
+              <Link 
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  active 
+                    ? "text-blue-600 bg-blue-50" 
+                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                }`}
+              >
+                {item.name}
+              </Link>
+            );
+          })}
+          
+          {isAdmin && (
             <Link 
-              key={item.name}
-              href={item.href}
+              href="/admin/dashboard"
               onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-base font-bold transition-colors ${
+                pathname.startsWith('/admin') 
+                  ? "text-indigo-600 bg-indigo-50" 
+                  : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50"
+              }`}
             >
-              {item.name}
+              <FiLock /> Admin Portal
             </Link>
-          ))}
+          )}
+
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="mt-3 space-y-1">
               <Link 

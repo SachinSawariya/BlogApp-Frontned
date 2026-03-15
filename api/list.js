@@ -2,18 +2,14 @@ const baseUrl = 'api/v1';
 
 export const apiList = {
   // Auth
-  // login: {
-  //   url: () => `/${baseUrl}/auth/login`,
-  //   method: 'POST'
-  // },
-  // register: {
-  //   url: () => `/${baseUrl}/auth/register`,
-  //   method: 'POST'
-  // },
-  // getProfile: {
-  //   url: () => `/${baseUrl}/auth/me`,
-  //   method: 'GET'
-  // },
+  login: {
+    url: () => `/${baseUrl}/auth/login`,
+    method: 'POST'
+  },
+  getProfile: {
+    url: () => `/${baseUrl}/auth/profile`,
+    method: 'GET'
+  },
 
   // Articles
   getArticleSections: {
@@ -24,7 +20,7 @@ export const apiList = {
     url: () => `/${baseUrl}/blogs/featured-articles`,
     method: 'GET'
   },
-  getBlogPost: {
+  getArticlBySlug: {
     url: (slug) => `/${baseUrl}/blogs/article/${slug}`,
     method: 'GET'
   },
@@ -32,10 +28,10 @@ export const apiList = {
     url: (slug, page = 1, limit = 12) => `/${baseUrl}/blogs/articles/${slug}?page=${page}&limit=${limit}`,
     method: 'GET'
   },
-  // createArticle: {
-  //   url: () => `/${baseUrl}/articles`,
-  //   method: 'POST'
-  // },
+  createBlog: {
+    url: () => `/${baseUrl}/blogs/`,
+    method: 'POST'
+  },
   // updateArticle: {
   //   url: (id) => `/${baseUrl}/articles/${id}`,
   //   method: 'PUT'
@@ -66,6 +62,10 @@ export const apiList = {
   //   url: (id) => `/${baseUrl}/categories/${id}`,
   //   method: 'PUT'
   // },
+  getCategoryArticlesTitles: {
+    url: (category) => `/${baseUrl}/categories/${category}/articles/titles`,
+    method: 'GET'
+  },
   // deleteCategory: {
   //   url: (id) => `/${baseUrl}/categories/${id}`,
   //   method: 'DELETE'

@@ -4,93 +4,99 @@ import { FiFolder, FiPlus } from "react-icons/fi";
 import CategoryCard from "@/shared/Card/CategoryCard";
 import CategoryCardSkeleton from "@/shared/Skeleton/CategoryCardSkeleton";
 
-const Categories = ({ categories, isLoading }) => {
+const CategoryHeader = ({ onNavigate }) => (
+  <div className="flex justify-between items-center mb-12">
+    <h2 className="text-3xl font-bold text-gray-900">
+      Browse by Category
+    </h2>
+    <button
+      onClick={onNavigate}
+      className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-2 group"
+    >
+      View All
+      <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
+    </button>
+  </div>
+);
+
+const CategoryLoading = () => (
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+    {[...Array(5)].map((_, index) => (
+      <CategoryCardSkeleton key={index} />
+    ))}
+  </div>
+);
+
+const CategoryEmpty = ({ onNavigate }) => (
+  <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-gray-200">
+    <div className="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
+      <FiFolder className="w-12 h-12 text-blue-200" />
+    </div>
+    <h3 className="text-xl font-bold text-gray-900 mb-2">
+      No categories available yet
+    </h3>
+    <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+      Categories will appear here once articles are published.
+    </p>
+    <button
+      onClick={onNavigate}
+      className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/10 flex items-center gap-2 mx-auto active:scale-95"
+    >
+      <FiPlus className="w-4 h-4" />
+      Explore All
+    </button>
+  </div>
+);
+
+const CategoryList = ({ categories }) => (
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+    {categories.map((category, index) => (
+      <CategoryCard
+        key={category.slug || index}
+        name={category.name}
+        count={category.count}
+        icon={category.icon}
+        href={`/categories/${category.slug}`}
+      />
+    ))}
+  </div>
+);
+
+export default function Categories({ categories, isLoading }) {
   const router = useRouter();
-
-  // Show skeleton loaders while loading
-  if (isLoading) {
-    return (
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Browse by Category
-            </h2>
-            <div className="h-8 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-            {[...Array(5)].map((_, index) => (
-              <CategoryCardSkeleton key={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Handle empty state
-  if (!categories || categories.length === 0) {
-    return (
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Browse by Category
-          </h2>
-
-          <div className="text-center py-12">
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <FiFolder className="w-12 h-12 text-gray-400" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              No categories available yet
-            </h3>
-            <p className="text-gray-500 mb-6">
-              Categories will appear here once articles are published.
-            </p>
-            <button
-              onClick={() => router.push("/blog")}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 mx-auto"
-            >
-              <FiPlus className="w-4 h-4" />
-              View All Categories
-            </button>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const handleViewAll = () => router.push("/categories");
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900">
-            Browse by Category
-          </h2>
-          <button
-            onClick={() => router.push("/blog")}
-            className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
-          >
-            View All Categories
-            <FiPlus className="ml-1 w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-          {categories.map((category, index) => (
-            <CategoryCard
-              key={category.slug || index}
-              name={category.name}
-              count={category.count}
-              icon={category.icon}
-              href={`/categories/${category.slug}`}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <>
+            <div className="flex justify-between items-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900">
+                Browse by Category
+              </h2>
+              <div className="h-8 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
+            </div>
+            <CategoryLoading />
+          </>
+        ) : (
+          <>
+            {!categories || categories.length === 0 ? (
+              <>
+                 <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+                  Browse by Category
+                </h2>
+                <CategoryEmpty onNavigate={handleViewAll} />
+              </>
+            ) : (
+              <>
+                <CategoryHeader onNavigate={handleViewAll} />
+                <CategoryList categories={categories} />
+              </>
+            )}
+          </>
+        )}
       </div>
     </section>
   );
-};
-
-export default Categories;
+}
