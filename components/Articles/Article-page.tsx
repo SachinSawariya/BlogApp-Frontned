@@ -1,3 +1,4 @@
+"use client";
 import { useArticles } from "@/components/Articles/hooks/useArticles";
 import { ArticleSection } from "./ArticleSections";
 import ArticlesSkeleton from "./ArticleSkeleton";

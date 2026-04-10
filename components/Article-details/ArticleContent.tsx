@@ -1,6 +1,7 @@
 import { FiCalendar, FiClock, FiUser, FiHeart, FiMessageCircle, FiBookmark } from "react-icons/fi";
 import { Article } from "@/components/Articles/types/articlesTypes";
 import Image from "next/image";
+import ReactMarkdown from 'react-markdown';
 
 interface ArticleContentProps {
   article: Article | null;
@@ -130,10 +131,9 @@ export default function ArticleContent({ article, isLoading }: ArticleContentPro
 
       {/* Article Content */}
       <div className="px-8 py-4 md:px-12 md:py-6 lg:px-16 lg:py-8">
-        <div 
-          className="prose prose-blue lg:prose-xl max-w-none text-gray-800 leading-[1.9] font-normal selection:bg-blue-100"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
+        <div className="prose prose-blue lg:prose-xl max-w-none text-gray-800 leading-[1.9] font-normal selection:bg-blue-100">
+          <ReactMarkdown>{article.content}</ReactMarkdown>
+        </div>
 
         {/* Tags & Footer */}
         <div className="mt-20 pt-12 border-t border-gray-100">

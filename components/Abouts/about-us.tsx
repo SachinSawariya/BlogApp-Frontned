@@ -201,9 +201,9 @@ const AboutUs = () => {
 const teamMembers = [
   {
     name: 'Sachin Kumar',
-    role: 'Founder & Full Stack Developer',
+    role: 'Founder & Software Engineer',
     bio: 'Focused on building premium digital experiences and exploring AI automation.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=1974',
+    image: '/images/sachin-pic.png',
     socials: {
       github: 'https://github.com/SachinSawariya',
       linkedin: 'https://www.linkedin.com/in/sachin-kumar-a91a62223/',

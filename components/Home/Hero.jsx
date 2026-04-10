@@ -6,7 +6,7 @@ export default function Hero() {
   const router = useRouter();
 
   const handleExplore = () => router.push("/articles");
-  const handleCreate = () => router.push("/admin/create-blog");
+  const handleCreate = () => router.push("/admin/login");
 
   return (
     <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 lg:py-32 overflow-hidden">

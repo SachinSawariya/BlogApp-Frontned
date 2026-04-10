@@ -5,7 +5,7 @@ export default function CallToAction() {
   const router = useRouter();
 
   const handleBrowse = () => router.push("/articles");
-  const handleSubscribe = () => router.push("/subscribe");
+  const handleInTouch = () => router.push("/contact");
 
   return (
     <section className="py-24 bg-gradient-to-br from-indigo-700 via-blue-600 to-indigo-800 text-white relative overflow-hidden">
@@ -27,10 +27,10 @@ export default function CallToAction() {
             Browse All Articles
           </button>
           <button 
-            onClick={handleSubscribe}
+            onClick={handleInTouch}
             className="border-2 border-white/30 text-white hover:bg-white hover:text-indigo-900 px-10 py-4 rounded-full font-bold text-lg backdrop-blur-sm transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            Subscribe to Newsletter
+            Get In Touch
           </button>
         </div>
       </div>

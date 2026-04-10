@@ -1,3 +1,4 @@
+"use client";
 import { FiSearch, FiAlertCircle, FiFilter, FiTrendingUp, FiFolder } from "react-icons/fi";
 import CategoryCard from "@/shared/Card/CategoryCard";
 import CategoryCardSkeleton from "@/shared/Skeleton/CategoryCardSkeleton";

@@ -30,7 +30,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center">
               <Link href="/" className="text-2xl font-bold text-blue-600">
-                AiForDevs
+                Gyanvora
               </Link>
             </div>
             <p className="mt-4 text-gray-500 text-sm">
@@ -84,7 +84,7 @@ const Footer = () => {
                   {item.name}
                 </Link>
               ))}
-              <Link href="/sitemap" className="text-base text-gray-500 hover:text-blue-600 block">
+              <Link href="/site-map" className="text-base text-gray-500 hover:text-blue-600 block">
                 Sitemap
               </Link>
             </div>
@@ -93,7 +93,7 @@ const Footer = () => {
 
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-500 text-center">
-            &copy; {currentYear} AiForDevs. All rights reserved.
+            &copy; {currentYear} Gyanvora. All rights reserved.
           </p>
         </div>
       </div>

@@ -55,9 +55,9 @@ const Header = () => {
           <div className="flex-shrink-0 flex items-center pl-4 md:pl-0">
             <Link href="/" className="flex items-center">
               <span className="text-2xl font-bold text-blue-600">
-                <span className="md:hidden">Ai</span>
-                <span className="hidden md:inline lg:hidden">Ai</span>
-                <span className="hidden lg:inline">AiForDevs</span>
+                <span className="md:hidden">Gv</span>
+                <span className="hidden md:inline lg:hidden">Gv</span>
+                <span className="hidden lg:inline">Gyanvora</span>
               </span>
             </Link>
           </div>
@@ -110,7 +110,8 @@ const Header = () => {
               <FiSearch className="absolute left-3 top-2.5 text-gray-400" />
             </form>
             
-            <div className="hidden md:flex items-center space-x-4">
+            {/* For Future USE */}
+            {/* <div className="hidden md:flex items-center space-x-4">
               <button 
                 onClick={() => router.push('/saved')}
                 className="p-2 text-gray-600 hover:text-blue-600"
@@ -118,7 +119,7 @@ const Header = () => {
               >
                 <FiBookmark className="h-5 w-5" />
               </button>
-            </div>
+            </div> */}
 
             {/* Mobile menu button */}
             <div className="md:hidden">
@@ -180,7 +181,8 @@ const Header = () => {
             </Link>
           )}
 
-          <div className="pt-4 pb-3 border-t border-gray-200">
+          {/* For Future USE */}
+          {/* <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="mt-3 space-y-1">
               <Link 
                 href="/saved" 
@@ -190,7 +192,7 @@ const Header = () => {
                 Saved Articles
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

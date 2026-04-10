@@ -16,6 +16,10 @@ export const apiList = {
     url: () => `/${baseUrl}/blogs/get-sections`,
     method: 'GET'
   },
+  getBlogList: {
+    url: () => `/${baseUrl}/blogs/all-articles`,
+    method: 'GET'
+  },
   getFeaturedArticles: {
     url: () => `/${baseUrl}/blogs/featured-articles`,
     method: 'GET'

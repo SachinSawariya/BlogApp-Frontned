@@ -1,3 +1,4 @@
+"use client";
 import { useState } from 'react';
 import { FiMail, FiMapPin, FiPhone, FiSend, FiCheckCircle } from 'react-icons/fi';
 import { FaArrowRight, FaMessage } from 'react-icons/fa6';
