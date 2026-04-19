@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { FaGithub, FaTwitter, FaLinkedin, FaRocket, FaUsers, FaShieldAlt, FaArrowRight } from 'react-icons/fa';
-import { FiMail, FiMessageCircle, FiAward } from 'react-icons/fi';
+import { FiAward } from 'react-icons/fi';
 import Link from 'next/link';
 
 const AboutUs = () => {

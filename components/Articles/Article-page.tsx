@@ -67,9 +67,11 @@ export default function ArticlesPageComponent() {
       <div className="container mx-auto px-4 py-10">
         {isLoading ? (
           <ArticlesSkeleton />
+        ) : sections?.length === 0 ? (
+          <FeaturedEmpty />
         ) : (
           <div className="space-y-20">
-            {sections.map((section, index) => (
+            {sections?.map((section, index) => (
               <div
                 key={index}
                 style={{
@@ -104,3 +106,17 @@ export default function ArticlesPageComponent() {
     </div>
   );
 }
+
+const FeaturedEmpty = () => (
+  <div className="text-center py-16 rounded-3xl">
+    <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+      <FiTrendingUp className="w-12 h-12 text-gray-300" />
+    </div>
+    <h3 className="text-xl font-bold text-gray-900 mb-2">
+      No featured articles yet
+    </h3>
+    <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+      Check back soon for our latest featured content or explore other sections.
+    </p>
+  </div>
+);

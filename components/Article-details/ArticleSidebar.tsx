@@ -1,4 +1,3 @@
-import { FiClock, FiMessageCircle, FiHeart, FiChevronRight } from "react-icons/fi";
 import { Article } from "@/components/Articles/types/articlesTypes";
 import Link from "next/link";
 import { useParams } from "next/navigation";

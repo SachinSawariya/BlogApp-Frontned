@@ -36,14 +36,6 @@ export const apiList = {
     url: () => `/${baseUrl}/blogs/`,
     method: 'POST'
   },
-  // updateArticle: {
-  //   url: (id) => `/${baseUrl}/articles/${id}`,
-  //   method: 'PUT'
-  // },
-  // deleteArticle: {
-  //   url: (id) => `/${baseUrl}/articles/${id}`,
-  //   method: 'DELETE'
-  // },
 
   // Categories
   getCategoriesList: {
@@ -54,40 +46,10 @@ export const apiList = {
     url: () => `/${baseUrl}/categories/top-categories`,
     method: 'GET'
   },
-  // getCategory: {
-  //   url: (id) => `/${baseUrl}/categories/${id}`,
-  //   method: 'GET'
-  // },
-  // createCategory: {
-  //   url: () => `/${baseUrl}/categories`,
-  //   method: 'POST'
-  // },
-  // updateCategory: {
-  //   url: (id) => `/${baseUrl}/categories/${id}`,
-  //   method: 'PUT'
-  // },
   getCategoryArticlesTitles: {
     url: (category) => `/${baseUrl}/categories/${category}/articles/titles`,
     method: 'GET'
   },
-  // deleteCategory: {
-  //   url: (id) => `/${baseUrl}/categories/${id}`,
-  //   method: 'DELETE'
-  // },
-
-  // Comments
-  // getComments: {
-  //   url: (articleId) => `/${baseUrl}/articles/${articleId}/comments`,
-  //   method: 'GET'
-  // },
-  // addComment: {
-  //   url: (articleId) => `/${baseUrl}/articles/${articleId}/comments`,
-  //   method: 'POST'
-  // },
-  // deleteComment: {
-  //   url: (commentId) => `/${baseUrl}/comments/${commentId}`,
-  //   method: 'DELETE'
-  // }
 };
 
 export default apiList;

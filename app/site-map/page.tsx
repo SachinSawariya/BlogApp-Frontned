@@ -157,7 +157,7 @@ export default function Sitemap() {
         {/* Additional Information */}
         <div className="mt-12 text-center">
           <div className="bg-gray-50 rounded-xl p-8">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Can't Find What You're Looking For?</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Can&apos;t Find What You&apos;re Looking For?</h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               Use our search functionality to find specific articles, topics, or information. 
               If you need further assistance, feel free to contact our team.

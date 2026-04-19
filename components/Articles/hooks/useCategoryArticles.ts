@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import commonApi from "@/api";
 import { Article } from "../types/articlesTypes";
+import { transformArticles } from "@/utils/articleTransformer";
 
 interface UseCategoryArticlesProps {
   slug: string;
@@ -37,8 +38,8 @@ export const useCategoryArticles = ({
       });
 
       if (response.data && response.data.articles && response.data.pagination) {
-        setArticles(response.data?.articles || []);
-        setPagination(response.data?.pagination);
+        setArticles(transformArticles(response.data.articles));
+        setPagination(response.data.pagination);
       } else {
         setArticles([]);
         setPagination({

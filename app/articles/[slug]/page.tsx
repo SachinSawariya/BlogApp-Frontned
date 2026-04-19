@@ -43,6 +43,7 @@ export async function generateMetadata(
       },
     };
   } catch (error) {
+    console.error("Error generating metadata for article:", error);
     return { title: 'Article | Gyanvora' };
   }
 }

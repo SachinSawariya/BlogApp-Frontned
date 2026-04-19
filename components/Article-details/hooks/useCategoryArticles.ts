@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import commonApi from "@/api";
 import { Article } from "@/components/Articles/types/articlesTypes";
 
-export const useCategoryArticles = (categorySlug: string, limit: number = 5) => {
+export const useCategoryArticles = (categorySlug: string) => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);

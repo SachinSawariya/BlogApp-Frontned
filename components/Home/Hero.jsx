@@ -26,7 +26,7 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
           <button 
             onClick={handleExplore}
-            className="group bg-white text-blue-700 hover:bg-blue-50 px-10 py-4 rounded-full font-bold text-lg flex items-center gap-3 transition-all duration-300 shadow-xl shadow-blue-900/20 hover:scale-105 active:scale-95"
+            className="group bg-white text-blue-700 hover:bg-blue-50 px-10 py-4 rounded-full font-bold text-lg flex items-center gap-3 transition-all duration-300 shadow-xl shadow-blue-900/20 hover:scale-105 active:scale-95 cursor-pointer"
           >
             <FiBookOpen className="text-xl" />
             Explore Articles
@@ -35,7 +35,7 @@ export default function Hero() {
           
           <button 
             onClick={handleCreate}
-            className="group bg-yellow-400 text-gray-900 hover:bg-yellow-300 px-10 py-4 rounded-full font-bold text-lg flex items-center gap-3 transition-all duration-300 shadow-xl shadow-yellow-500/10 hover:scale-105 active:scale-95"
+            className="group bg-yellow-400 text-gray-900 hover:bg-yellow-300 px-10 py-4 rounded-full font-bold text-lg flex items-center gap-3 transition-all duration-300 shadow-xl shadow-yellow-500/10 hover:scale-105 active:scale-95 cursor-pointer"
           >
             <FiPlusCircle className="text-xl" />
             Write Article

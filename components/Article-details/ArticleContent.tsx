@@ -1,4 +1,4 @@
-import { FiCalendar, FiClock, FiUser, FiHeart, FiMessageCircle, FiBookmark } from "react-icons/fi";
+import { FiCalendar, FiClock, FiUser, FiHeart, FiBookmark } from "react-icons/fi";
 import { Article } from "@/components/Articles/types/articlesTypes";
 import Image from "next/image";
 import ReactMarkdown from 'react-markdown';
@@ -30,7 +30,7 @@ export default function ArticleContent({ article, isLoading }: ArticleContentPro
     return (
       <div className="bg-white rounded-lg shadow-sm p-8 text-center">
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Article Not Found</h3>
-        <p className="text-gray-600">The article you're looking for doesn't exist or has been removed.</p>
+        <p className="text-gray-600">The article you&apos;re looking for doesn&apos;t exist or has been removed.</p>
       </div>
     );
   }

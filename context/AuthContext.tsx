@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 
 interface User {
   id: string;
@@ -28,12 +27,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const savedToken = Cookies.get('token');
-    const savedUser = localStorage.getItem('user');
+    // Initial sync from storage
+    const savedToken = localStorage.getItem('token') || Cookies.get('token');
+    const savedUserStr = localStorage.getItem('user');
 
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+    if (savedToken && savedUserStr) {
+      try {
+        const parsedUser = JSON.parse(savedUserStr);
+        setToken(savedToken);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Failed to parse saved user data:', error);
+        // Clear corrupted data
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        Cookies.remove('token');
+      }
     }
     setIsLoading(false);
   }, []);
@@ -41,17 +50,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (newToken: string, userData: User) => {
     setToken(newToken);
     setUser(userData);
-    Cookies.set('token', newToken, { expires: 1 }); // 1 day
-    localStorage.setItem('user', JSON.stringify(userData));
+    
+    // Sync to all storage locations
     localStorage.setItem('token', newToken);
+    localStorage.setItem('user', JSON.stringify(userData));
+    Cookies.set('token', newToken, { expires: 7, secure: true, sameSite: 'strict' });
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
-    Cookies.remove('token');
-    localStorage.removeItem('user');
+    
+    // Clear all storage locations
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    Cookies.remove('token');
   };
 
   return (

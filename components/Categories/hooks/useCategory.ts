@@ -50,12 +50,12 @@ export const useCategory = ({
         },
       });
 
-      const formattedCategories = response.data.map((category: { id?: string; _id?: string; name: string; slug?: string; description?: string; postCount?: number; count?: number; icon?: string }) => ({
+      const formattedCategories = response.data.map((category: { id?: string; _id?: string; name: string; slug?: string; description?: string; articlesCount?: number; icon?: string }) => ({
         id: category.id || category._id,
         name: category.name,
         slug: category.slug || category.name.toLowerCase().replace(/\s+/g, "-"),
         description: category.description,
-        postCount: category.postCount || category.count || 0,
+        postCount: category.articlesCount || 0,
         icon:
           category.icon || defaultIcons[category.name.toLowerCase()] || "📄",
       }));

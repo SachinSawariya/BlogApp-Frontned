@@ -9,18 +9,18 @@ interface PaginationProps {
   totalResults?: number;
 }
 
-const SharedPagination = ({ 
-  currentPage, 
-  totalPages, 
-  onPageChange, 
+const SharedPagination = ({
+  currentPage,
+  totalPages,
+  onPageChange,
   isLoading = false,
   resultsPerPage = 10,
-  totalResults = 0
+  totalResults = 0,
 }: PaginationProps) => {
   const getVisiblePages = () => {
     const pages = [];
     const maxVisible = 7; // Show max 7 page numbers
-    
+
     if (totalPages <= maxVisible) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
@@ -28,39 +28,39 @@ const SharedPagination = ({
     } else {
       // Always show first page
       pages.push(1);
-      
+
       // Calculate range around current page
       let start = Math.max(2, currentPage - 2);
       let end = Math.min(totalPages - 1, currentPage + 2);
-      
+
       // Adjust range if too close to edges
       if (currentPage <= 3) {
         end = Math.min(totalPages - 1, 5);
       } else if (currentPage >= totalPages - 3) {
         start = Math.max(2, totalPages - 4);
       }
-      
+
       // Add ellipsis if needed
       if (start > 2) {
-        pages.push('...');
+        pages.push("...");
       }
-      
+
       // Add middle pages
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
-      
+
       // Add ellipsis if needed
       if (end < totalPages - 1) {
-        pages.push('...');
+        pages.push("...");
       }
-      
+
       // Always show last page
       if (totalPages > 1) {
         pages.push(totalPages);
       }
     }
-    
+
     return pages;
   };
 
@@ -75,7 +75,7 @@ const SharedPagination = ({
       <div className="text-sm text-gray-600 font-medium">
         {startResult}-{endResult} of {totalResults.toLocaleString()}
       </div>
-      
+
       {/* Pagination controls */}
       <div className="flex items-center space-x-1">
         {/* Previous Button */}
@@ -92,7 +92,7 @@ const SharedPagination = ({
         <div className="flex items-center">
           {getVisiblePages().map((page, index) => (
             <div key={index}>
-              {page === '...' ? (
+              {page === "..." ? (
                 <span className="px-3 py-2 text-sm text-gray-500 bg-white border-t border-b border-gray-300">
                   ...
                 </span>
@@ -131,8 +131,8 @@ const SharedPagination = ({
           value={resultsPerPage}
           onChange={(e) => {
             // This will be handled by parent component
-            const event = new CustomEvent('resultsPerPageChange', { 
-              detail: parseInt(e.target.value) 
+            const event = new CustomEvent("resultsPerPageChange", {
+              detail: parseInt(e.target.value),
             });
             window.dispatchEvent(event);
           }}

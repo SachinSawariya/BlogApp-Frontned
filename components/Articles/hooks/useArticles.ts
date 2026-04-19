@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import commonApi from "@/api";
 import { Article } from "../types/articlesTypes";
+import { transformArticles } from "@/utils/articleTransformer";
 
 export const useArticles = () => {
   const [sections, setSections] = useState<
@@ -21,7 +22,12 @@ export const useArticles = () => {
 
       console.log("response", response);
 
-      setSections(response.data);
+      const transformedSections = (response.data || []).map((section: any) => ({
+        ...section,
+        articles: transformArticles(section.articles)
+      }));
+
+      setSections(transformedSections);
     } catch (err) {
       console.error("Error fetching article sections:", err);
       setError(

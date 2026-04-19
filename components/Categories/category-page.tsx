@@ -45,7 +45,7 @@ export default function CategoriesPageComponents() {
               </h1>
               <p className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed">
                 Browse our comprehensive collection of articles organized by categories. 
-                Find exactly what you're looking for with smart search and filtering.
+                Find exactly what you&apos;re looking for with smart search and filtering.
               </p>
             </div>
 

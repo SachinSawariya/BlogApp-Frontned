@@ -24,7 +24,7 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
   const limit = parseInt(searchParams.get("limit") || "10");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const { articles, pagination, isLoading, error, refresh } =
+  const { articles, pagination, isLoading } =
     useCategoryArticles({
       slug,
       page: currentPage,

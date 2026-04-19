@@ -1,9 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FiClock, FiHeart, FiMessageSquare, FiShare2, FiArrowLeft, FiEye } from "react-icons/fi";
-import { useState } from 'react';
-import type { MouseEvent, ReactNode } from 'react';
+import {
+  FiClock,
+  FiHeart,
+  FiMessageSquare,
+  FiShare2,
+  FiArrowLeft,
+  FiEye,
+} from "react-icons/fi";
+import { useState, useEffect } from "react";
+import type { MouseEvent, ReactNode } from "react";
+import ReactMarkdown from "react-markdown";
 
 interface ArticleCardProps {
   id: string | number;
@@ -22,48 +30,64 @@ interface ArticleCardProps {
   viewMode?: "grid" | "list";
 }
 
-const ArticleCard = ({ 
-  id, 
-  title, 
-  category, 
+const ArticleCard = ({
+  id,
+  title,
+  category,
   slug,
-  excerpt, 
-  readTime, 
-  imageUrl, 
+  excerpt,
+  readTime,
+  imageUrl,
   likes: initialLikes = 0,
   comments = 0,
   views = 0,
   className = "",
   onClick,
   children,
-  viewMode = "grid"
+  viewMode = "grid",
 }: ArticleCardProps) => {
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
   const [currentLikes, setCurrentLikes] = useState(initialLikes);
-  
-  // Force list view on mobile devices
-  const actualViewMode = typeof window !== 'undefined' && window.innerWidth < 768 ? "list" : viewMode;
-  
+  const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Use useEffect result to determine view mode on client-side only to prevent hydration mismatch
+  const actualViewMode = isMounted && isMobile ? "list" : viewMode;
+
   const handleLike = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (isLiked) {
-      setCurrentLikes(prev => prev - 1);
+      setCurrentLikes((prev) => prev - 1);
     } else {
-      setCurrentLikes(prev => prev + 1);
+      setCurrentLikes((prev) => prev + 1);
     }
     setIsLiked(!isLiked);
   };
-  
+
   const handleShare = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     // Implement share functionality
     if (navigator.share) {
-      navigator.share({
-        title: title,
-        text: excerpt,
-        url: window.location.href,
-      }).catch(console.error);
+      navigator
+        .share({
+          title: title,
+          text: excerpt,
+          url: window.location.href,
+        })
+        .catch(console.error);
     } else {
       // Fallback for browsers that don't support Web Share API
       navigator.clipboard.writeText(window.location.href);
@@ -73,7 +97,7 @@ const ArticleCard = ({
 
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    
+
     if (onClick) {
       onClick(e);
     } else {
@@ -83,13 +107,13 @@ const ArticleCard = ({
 
   const formatNumber = (num: number): string => {
     if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'k';
+      return (num / 1000).toFixed(1) + "k";
     }
     return num.toString();
   };
 
   return (
-    <div 
+    <div
       className={`${
         actualViewMode === "grid"
           ? "bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 group"
@@ -98,61 +122,64 @@ const ArticleCard = ({
       onClick={handleClick}
       role="article"
       tabIndex={0}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleClick(e as any)}
+      onKeyDown={(e) =>
+        (e.key === "Enter" || e.key === " ") && handleClick(e as any)
+      }
     >
       {actualViewMode === "grid" ? (
         <>
           <div className="relative h-48 bg-gray-100 overflow-hidden">
-            {imageUrl ? (
-              <img 
-                src={imageUrl} 
+            {imageUrl && !imageError ? (
+              <img
+                src={imageUrl}
                 alt={title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
-                onError={(e) => {
-                  // Fallback to gradient if image fails to load
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  target.parentElement!.innerHTML = `
-                    <div class="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center">
-                      ${category}
-                    </div>
-                  `;
-                }}
+                onError={() => setImageError(true)}
               />
             ) : (
-              <div 
+              <div
                 className="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center"
                 aria-label={`Category: ${category}`}
               >
                 {category}
               </div>
             )}
-            
+
             {/* Overlay with actions on hover */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-4">
               <div className="flex space-x-3 text-white w-full justify-between">
                 <div className="flex space-x-3">
-                  <button 
+                  <button
                     onClick={handleLike}
                     className="flex items-center space-x-1 hover:text-red-400 transition-colors bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg"
-                    aria-label={isLiked ? 'Unlike this article' : 'Like this article'}
+                    aria-label={
+                      isLiked ? "Unlike this article" : "Like this article"
+                    }
                   >
-                    <FiHeart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
-                    <span className="text-xs font-medium">{formatNumber(currentLikes)}</span>
+                    <FiHeart
+                      className={`w-4 h-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+                    />
+                    <span className="text-xs font-medium">
+                      {formatNumber(currentLikes)}
+                    </span>
                   </button>
                   <div className="flex items-center space-x-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg">
                     <FiMessageSquare className="w-4 h-4" />
-                    <span className="text-xs font-medium">{formatNumber(comments)}</span>
+                    <span className="text-xs font-medium">
+                      {formatNumber(comments)}
+                    </span>
                   </div>
                   {views > 0 && (
                     <div className="flex items-center space-x-1 bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg">
                       <FiEye className="w-4 h-4" />
-                      <span className="text-xs font-medium">{formatNumber(views)}</span>
+                      <span className="text-xs font-medium">
+                        {formatNumber(views)}
+                      </span>
                     </div>
                   )}
                 </div>
-                <button 
+                <button
                   onClick={handleShare}
                   className="hover:text-blue-300 transition-colors bg-white/20 backdrop-blur-sm p-1.5 rounded-lg"
                   aria-label="Share this article"
@@ -162,7 +189,7 @@ const ArticleCard = ({
               </div>
             </div>
           </div>
-          
+
           <div className="p-6">
             <div className="flex justify-between items-start mb-3">
               <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100 transition-colors">
@@ -173,15 +200,15 @@ const ArticleCard = ({
                 <span>{readTime} min read</span>
               </div>
             </div>
-            
+
             <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
               {title}
             </h3>
-            
-            <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-              {excerpt}
-            </p>
-            
+
+            <div className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+              <ReactMarkdown>{excerpt}</ReactMarkdown>
+            </div>
+
             {/* Stats bar */}
             <div className="flex items-center justify-between pt-3 border-t border-gray-100">
               <div className="flex items-center space-x-3 text-xs text-gray-500">
@@ -200,13 +227,13 @@ const ArticleCard = ({
                   </span>
                 )}
               </div>
-              
+
               <button className="text-blue-600 hover:text-blue-700 font-medium text-xs flex items-center group opacity-0 group-hover:opacity-100 transition-opacity">
                 Read More
                 <FiArrowLeft className="ml-1 w-3.5 h-3.5 rotate-180 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
-            
+
             {children}
           </div>
         </>
@@ -214,21 +241,13 @@ const ArticleCard = ({
         <div className="flex flex-col md:flex-row h-full">
           {/* Left Side - Image */}
           <div className="md:w-1/3 lg:w-2/5 h-48 md:h-auto relative overflow-hidden">
-            {imageUrl ? (
-              <img 
-                src={imageUrl} 
+            {imageUrl && !imageError ? (
+              <img
+                src={imageUrl}
                 alt={title}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  target.parentElement!.innerHTML = `
-                    <div class="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center">
-                      ${category}
-                    </div>
-                  `;
-                }}
+                onError={() => setImageError(true)}
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold p-4 text-center">
@@ -236,7 +255,7 @@ const ArticleCard = ({
               </div>
             )}
           </div>
-          
+
           {/* Right Side - Content */}
           <div className="md:w-2/3 lg:w-3/5 p-6 flex flex-col justify-between">
             <div>
@@ -249,25 +268,29 @@ const ArticleCard = ({
                   <span>{readTime} min read</span>
                 </div>
               </div>
-              
+
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
                 {title}
               </h3>
-              
-              <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                {excerpt}
-              </p>
+
+              <div className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                <ReactMarkdown>{excerpt}</ReactMarkdown>
+              </div>
             </div>
-            
+
             {/* Footer with interactions */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
               <div className="flex items-center space-x-4 text-sm text-gray-500">
-                <button 
+                <button
                   onClick={handleLike}
                   className="flex items-center space-x-1 hover:text-red-500 transition-colors"
-                  aria-label={isLiked ? 'Unlike this article' : 'Like this article'}
+                  aria-label={
+                    isLiked ? "Unlike this article" : "Like this article"
+                  }
                 >
-                  <FiHeart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+                  <FiHeart
+                    className={`w-4 h-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+                  />
                   <span>{formatNumber(currentLikes)}</span>
                 </button>
                 <div className="flex items-center space-x-1">
@@ -280,7 +303,7 @@ const ArticleCard = ({
                     <span>{formatNumber(views)}</span>
                   </div>
                 )}
-                <button 
+                <button
                   onClick={handleShare}
                   className="hover:text-blue-500 transition-colors"
                   aria-label="Share this article"
@@ -288,7 +311,7 @@ const ArticleCard = ({
                   <FiShare2 className="w-4 h-4" />
                 </button>
               </div>
-              
+
               <button className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center group">
                 Read More
                 <FiArrowLeft className="ml-2 w-4 h-4 rotate-180 group-hover:translate-x-1 transition-transform" />

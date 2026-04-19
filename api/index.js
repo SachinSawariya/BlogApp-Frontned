@@ -5,39 +5,43 @@ import { apiList } from './list';
 
 // const API_BASE_URL = publicRuntimeConfig.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000';
 
-const API_BASE_URL = 'http://localhost:9876';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:9876';
 
-// Global error handler
+/**
+ * Global error handler for API calls
+ * @param {Error} error - The error object
+ * @throws {Object} Structured error object
+ */
 const handleError = (error) => {
-  if (error?.response?.status === 403) {
-    return error?.response?.data;
-  }
-  
-  const { data = {} } = error?.response || {};
-  
-  if (data?.code === 'UNAUTHENTICATED') {
-    // handleSessionLogout();
-    // showNotification('Oops, it looks like your session has expired!', 'error', { id: 'logout' });
-    return error?.response?.data;
-  } else if (data?.message && data?.message !== 'Permission not found!') {
-    // showNotification(data?.message, 'error');
+  const errorResponse = {
+    status: error?.response?.status || 500,
+    message: error?.response?.data?.message || error.message || 'An unexpected error occurred',
+    data: error?.response?.data || null,
+    code: error?.response?.data?.code || 'UNKNOWN_ERROR'
+  };
+
+  if (errorResponse.status === 401 || errorResponse.code === 'UNAUTHENTICATED') {
+    // Optionally handle session logout logic here if needed centrally
+    console.warn('Authentication error detected');
   }
 
-  if (error) {
-    console.error('API Error:', error);
-  }
+  console.error('API Error:', {
+    status: errorResponse.status,
+    message: errorResponse.message,
+    code: errorResponse.code
+  });
   
-  throw error;
+  throw errorResponse;
 };
 
 /**
- * Common API function
+ * Common API function for handling fetch requests
  * @param {Object} options - Options for the API call
- * @param {string} options.action - The API action from apiList
- * @param {Array} [options.parameters=[]] - Parameters for the URL
- * @param {Object} [options.data={}] - Request body data
- * @param {Object} [options.config={}] - Additional fetch config
- * @returns {Promise<any>} - The response data
+ * @param {string} options.action - The API action key from apiList
+ * @param {Array} [options.parameters=[]] - Parameters to be passed to URL functions
+ * @param {Object} [options.data={}] - Request body data (for POST/PUT)
+ * @param {Object} [options.config={}] - Additional fetch configurations
+ * @returns {Promise<any>} - The JSON response from the API
  */
 const commonApi = async ({
   action,
@@ -51,40 +55,49 @@ const commonApi = async ({
     throw new Error(`API action '${action}' not found in apiList`);
   }
 
-  // Get token from localStorage
+  // Get token from localStorage as the primary source of truth for the API layer
   let token = '';
   if (typeof window !== 'undefined') {
     token = localStorage.getItem('token') || '';
   }
 
-  // Build the URL with parameters
-  const url = typeof apiConfig.url === 'function' 
+  // Build the URL, supporting both static strings and functions
+  const urlPath = typeof apiConfig.url === 'function' 
     ? apiConfig.url(...parameters)
     : apiConfig.url;
 
-  // Prepare headers
+  const fullUrl = `${API_BASE_URL}${urlPath.startsWith('/') ? '' : '/'}${urlPath}`;
+
   const headers = {
     'Content-Type': 'application/json',
     ...(token && { 'Authorization': `Bearer ${token}` }),
     ...(config.headers || {})
   };
 
-  // Prepare request options
   const requestOptions = {
     method: apiConfig.method,
     headers,
     ...config,
-    ...(data && apiConfig.method !== 'GET' && { 
+    ...(data && ['POST', 'PUT', 'PATCH'].includes(apiConfig.method) && { 
       body: JSON.stringify(data) 
     })
   };
 
   try {
-    const response = await fetch(`${API_BASE_URL}${url}`, requestOptions);
-    const responseData = await response.json();
+    const response = await fetch(fullUrl, requestOptions);
+    
+    // Check if response is JSON before parsing
+    const contentType = response.headers.get('content-type');
+    let responseData;
+    
+    if (contentType && contentType.includes('application/json')) {
+      responseData = await response.json();
+    } else {
+      responseData = { message: await response.text() };
+    }
 
     if (!response.ok) {
-      const error = new Error(responseData.message || 'Something went wrong');
+      const error = new Error(responseData.message || 'Request failed');
       error.response = {
         status: response.status,
         data: responseData

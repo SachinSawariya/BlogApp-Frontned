@@ -1,0 +1,120 @@
+/* components/Admin/LexicalEditor.css */
+
+.editor-container {
+  position: relative;
+  background: #f9fafb;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.editor-container:focus-within {
+  border-color: #3b82f6;
+  ring: 2px solid #3b82f6;
+  background: white;
+}
+
+.editor-inner {
+  position: relative;
+  min-height: 300px;
+}
+
+.editor-input {
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+  resize: none;
+  font-size: 1rem;
+  padding: 1.5rem;
+  outline: none;
+  font-family: inherit;
+  color: #111827;
+}
+
+.editor-placeholder {
+  color: #9ca3af;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-size: 1rem;
+  user-select: none;
+  display: inline-block;
+  pointer-events: none;
+}
+
+/* Toolbar Styling */
+.toolbar {
+  display: flex;
+  margin-bottom: 1px;
+  background: #fff;
+  padding: 6px;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.toolbar-item {
+  border: 0;
+  display: flex;
+  background: none;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  vertical-align: middle;
+  color: #4b5563;
+  transition: background 0.1s;
+}
+
+.toolbar-item:hover {
+  background-color: #f3f4f6;
+}
+
+.toolbar-item.active {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+
+.toolbar-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.toolbar .divider {
+  width: 1px;
+  background-color: #e5e7eb;
+  margin: 0 4px;
+  height: 20px;
+}
+
+/* Rich Text Styling */
+.editor-input h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 1.25rem; color: #111827; letter-spacing: -0.025em; }
+.editor-input h2 { font-size: 1.875rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 1rem; color: #1f2937; }
+.editor-input p { margin-bottom: 1rem; line-height: 1.625; }
+.editor-input b { font-weight: 700; color: #111827; }
+.editor-input i { font-style: italic; }
+.editor-input u { text-decoration: underline; }
+.editor-input ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+.editor-input ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 1rem; }
+.editor-input blockquote { 
+  border-left: 4px solid #3b82f6; 
+  padding-left: 1rem; 
+  margin: 1.5rem 0; 
+  color: #4b5563; 
+  font-style: italic;
+  background: #f8fafc;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.editor-input code {
+  background-color: #f1f5f9;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875rem;
+  color: #cf222e;
+}

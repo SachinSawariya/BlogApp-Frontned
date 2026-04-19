@@ -1,5 +1,5 @@
 "use client";
-import { FiFileText, FiCheckCircle, FiAlertTriangle, FiBook, FiArrowLeft } from "react-icons/fi";
+import { FiFileText, FiCheckCircle, FiBook, FiArrowLeft } from "react-icons/fi";
 import Link from "next/link";
 
 export default function TermsContent() {
@@ -62,7 +62,7 @@ export default function TermsContent() {
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  By accessing and using Gyanvora (the "Website"), you accept and agree to be bound by the terms and provision of this agreement.
+                  By accessing and using Gyanvora (the &quot;Website&quot;), you accept and agree to be bound by the terms and provision of this agreement.
                 </p>
               </div>
             </section>
