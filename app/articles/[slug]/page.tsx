@@ -1,6 +1,6 @@
 import ArticleDetailComponent from "@/components/Article-details/ArticleDetailsPage";
 import commonApi from "@/api";
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -8,10 +8,10 @@ type Props = {
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { slug } = await params;
-  
+
   try {
     const response = await commonApi({
       action: "getArticlBySlug",
@@ -19,32 +19,40 @@ export async function generateMetadata(
     });
     const article = response.data;
 
-    if (!article) return { title: 'Article Not Found' };
+    if (!article) return { title: "Article Not Found" };
 
     const previousImages = (await parent).openGraph?.images || [];
 
     return {
       title: article.title,
-      description: article.content ? article.content.substring(0, 160).replace(/[#*]/g, '').trim() : "Read this interesting article on Gyanvora.",
+      description: article.content
+        ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
+        : "Read this interesting article on Gyanvora.",
       openGraph: {
         title: article.title,
-        description: article.content ? article.content.substring(0, 160).replace(/[#*]/g, '').trim() : "Read this interesting article on Gyanvora.",
-        url: `https://gyanvora.com/articles/${slug}`,
-        images: article.coverImage ? [article.coverImage, ...previousImages] : previousImages,
-        type: 'article',
+        description: article.content
+          ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
+          : "Read this interesting article on Gyanvora.",
+        url: `https://gyanvora.vercel.app/articles/${slug}`,
+        images: article.coverImage
+          ? [article.coverImage, ...previousImages]
+          : previousImages,
+        type: "article",
         publishedTime: article.createdAt,
-        authors: [article.authorName || 'Gyanvora Team'],
+        authors: [article.authorName || "Gyanvora Team"],
       },
       twitter: {
         card: "summary_large_image",
         title: article.title,
-        description: article.content ? article.content.substring(0, 160).replace(/[#*]/g, '').trim() : "Read this interesting article on Gyanvora.",
+        description: article.content
+          ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
+          : "Read this interesting article on Gyanvora.",
         images: article.coverImage ? [article.coverImage] : [],
       },
     };
   } catch (error) {
     console.error("Error generating metadata for article:", error);
-    return { title: 'Article | Gyanvora' };
+    return { title: "Article | Gyanvora" };
   }
 }
 
@@ -63,26 +71,28 @@ export default async function ArticleDetailPage({ params }: Props) {
       jsonLd = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": article.title,
-        "description": article.content ? article.content.substring(0, 160).replace(/[#*]/g, '').trim() : "Read this interesting article on Gyanvora.",
-        "image": article.coverImage,
-        "datePublished": article.createdAt,
-        "author": {
+        headline: article.title,
+        description: article.content
+          ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
+          : "Read this interesting article on Gyanvora.",
+        image: article.coverImage,
+        datePublished: article.createdAt,
+        author: {
           "@type": "Person",
-          "name": article.authorName || "Gyanvora Team"
+          name: article.authorName || "Gyanvora Team",
         },
-        "publisher": {
+        publisher: {
           "@type": "Organization",
-          "name": "Gyanvora",
-          "logo": {
+          name: "Gyanvora",
+          logo: {
             "@type": "ImageObject",
-            "url": "https://gyanvora.com/logo.png"
-          }
+            url: "https://gyanvora.vercel.app/logo.png",
+          },
         },
-        "mainEntityOfPage": {
+        mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `https://gyanvora.com/articles/${slug}`
-        }
+          "@id": `https://gyanvora.vercel.app/articles/${slug}`,
+        },
       };
     }
   } catch (error) {
