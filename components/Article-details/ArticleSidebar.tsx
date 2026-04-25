@@ -41,7 +41,7 @@ export default function ArticleSidebar({ articles, isLoading, title }: ArticleSi
         </div>
       ) : (
         <div className="space-y-2 max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar">
-          {articles.map((article: any) => {
+          {articles.map((article: Article) => {
             const isActive = currentSlug === article.slug;
             return (
               <Link

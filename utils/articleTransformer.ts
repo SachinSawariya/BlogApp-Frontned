@@ -11,13 +11,13 @@ export const transformArticle = (apiArticle: any): Article => {
   if (!apiArticle) return {} as Article;
 
   return {
-    id: apiArticle.id || apiArticle._id || '',
+    _id: apiArticle.id || apiArticle._id || '',
     title: apiArticle.title || 'Untitled',
     content: apiArticle.content || apiArticle.excerpt || '',
     category: apiArticle.category || 'Uncategorized',
     slug: apiArticle.slug || '',
     readTime: apiArticle.readTime || '5 min read',
-    imageUrl: apiArticle.imageUrl || apiArticle.coverImage || '',
+    coverImage: apiArticle.imageUrl || apiArticle.coverImage || '',
     likes: apiArticle.likes || 0,
     comments: apiArticle.comments || 0,
     views: apiArticle.views || 0,

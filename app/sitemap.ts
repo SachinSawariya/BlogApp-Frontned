@@ -1,5 +1,12 @@
 import { MetadataRoute } from 'next';
 import commonApi from '@/api';
+import { Article } from '@/components/Articles/types/articlesTypes';
+
+interface Category {
+  _id: string;
+  name: string;
+  slug: string;
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://gyanvora.com';
@@ -22,14 +29,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching categories for sitemap:', error);
   }
 
-  const articleEntries: MetadataRoute.Sitemap = articles.map((article: any) => ({
+  const articleEntries: MetadataRoute.Sitemap = articles.map((article: Article) => ({
     url: `${baseUrl}/articles/${article.slug}`,
-    lastModified: new Date(article.updatedAt || article.createdAt),
+    lastModified: new Date(article.updatedAt || article.createdAt || new Date()),
     changeFrequency: 'weekly',
     priority: 0.7,
   }));
 
-  const categoryEntries: MetadataRoute.Sitemap = categories.map((category: any) => ({
+  const categoryEntries: MetadataRoute.Sitemap = categories.map((category: Category) => ({
     url: `${baseUrl}/categories/${category.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly',

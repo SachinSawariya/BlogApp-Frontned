@@ -134,7 +134,7 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
             >
               {articles.map((article, index) => (
                 <div
-                  key={article.id || index}
+                  key={article._id || index}
                   style={{
                     animationDelay: `${index * 100}ms`,
                     animation: "fadeInUp 0.6s ease-out forwards",

@@ -14,6 +14,22 @@ interface UseCategoryProps {
   initialSearchQuery?: string;
 }
 
+// Default icons for categories (can be extended or replaced)
+const defaultIcons: Record<string, string> = {
+  technology: "💻",
+  programming: "👨‍💻",
+  "web development": "🌐",
+  "mobile development": "📱",
+  "ui/ux": "🎨",
+  "data science": "📊",
+  "machine learning": "🤖",
+  "cloud computing": "☁️",
+  devops: "🔧",
+  cybersecurity: "🔒",
+  blockchain: "⛓️",
+  iot: "📡",
+};
+
 export const useCategory = ({
   initialSearchQuery = "",
 }: UseCategoryProps = {}) => {
@@ -22,22 +38,6 @@ export const useCategory = ({
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-
-  // Default icons for categories (can be extended or replaced)
-  const defaultIcons: Record<string, string> = {
-    technology: "💻",
-    programming: "👨‍💻",
-    "web development": "🌐",
-    "mobile development": "📱",
-    "ui/ux": "🎨",
-    "data science": "📊",
-    "machine learning": "🤖",
-    "cloud computing": "☁️",
-    devops: "🔧",
-    cybersecurity: "🔒",
-    blockchain: "⛓️",
-    iot: "📡",
-  };
 
   const fetchCategories = useCallback(async () => {
     try {

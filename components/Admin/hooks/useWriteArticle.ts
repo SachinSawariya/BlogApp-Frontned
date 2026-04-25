@@ -5,11 +5,16 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import commonApi from '@/api';
 
+interface Category {
+  _id: string;
+  name: string;
+}
+
 export const useWriteArticle = () => {
   const { user, isLoading: authLoading } = useAuth();
   const router = useRouter();
   
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -98,9 +103,10 @@ export const useWriteArticle = () => {
         setStatus('error');
         setErrorMessage(response.message || 'Failed to create blog');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
       setStatus('error');
-      setErrorMessage(err.response?.data?.message || 'Something went wrong');
+      setErrorMessage(error.response?.data?.message || 'Something went wrong');
     }
   };
 

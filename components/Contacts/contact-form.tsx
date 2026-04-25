@@ -20,7 +20,6 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus('submitting');
     setTimeout(() => {
-      console.log('Form submitted:', formData);
       setStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setStatus('idle'), 3000);

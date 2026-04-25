@@ -15,8 +15,6 @@ export const useFeaturedArticles = () => {
         action: "getFeaturedArticles",
       });
 
-      console.log("Featured articles response:", response);
-
       const featuredArticles = transformArticles(response.data);
       setArticles(featuredArticles);
     } catch (err) {

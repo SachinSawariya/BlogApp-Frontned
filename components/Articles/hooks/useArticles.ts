@@ -3,6 +3,11 @@ import commonApi from "@/api";
 import { Article } from "../types/articlesTypes";
 import { transformArticles } from "@/utils/articleTransformer";
 
+interface ArticleSection {
+  category: string;
+  articles: Article[];
+}
+
 export const useArticles = () => {
   const [sections, setSections] = useState<
     Array<{
@@ -19,10 +24,7 @@ export const useArticles = () => {
       const response = await commonApi({
         action: "getArticleSections",
       });
-
-      console.log("response", response);
-
-      const transformedSections = (response.data || []).map((section: any) => ({
+      const transformedSections = (response.data || []).map((section: ArticleSection) => ({
         ...section,
         articles: transformArticles(section.articles)
       }));

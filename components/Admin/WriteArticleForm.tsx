@@ -129,7 +129,7 @@ export const WriteArticleForm = () => {
           <LexicalEditor 
             value={formData.content} 
             onChange={(val) => {
-              handleChange({ target: { name: 'content', value: val } } as any);
+              handleChange({ target: { name: 'content', value: val } } as unknown as React.ChangeEvent<HTMLInputElement>);
             }} 
             placeholder="Write your article content here..."
           />

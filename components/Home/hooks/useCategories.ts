@@ -14,8 +14,6 @@ export const useCategories = () => {
         action: "getTopCategories",
       });
 
-      console.log("Categories response:", response);
-
       const categoriesData = transformCategories(response.data);
       setCategories(categoriesData);
     } catch (err) {

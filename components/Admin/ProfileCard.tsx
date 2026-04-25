@@ -1,6 +1,7 @@
 "use client";
 
 import { FiUser } from 'react-icons/fi';
+import Image from 'next/image';
 
 interface ProfileCardProps {
   user: {
@@ -17,7 +18,13 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
       <div className="flex flex-col items-center text-center">
         <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center text-blue-600 mb-4 border-4 border-white shadow-lg overflow-hidden">
           {user.avatar ? (
-            <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+            <Image 
+              src={user.avatar} 
+              alt={user.name} 
+              width={96} 
+              height={96} 
+              className="w-full h-full object-cover" 
+            />
           ) : (
             <FiUser size={40} />
           )}
