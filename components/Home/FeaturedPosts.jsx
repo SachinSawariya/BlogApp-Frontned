@@ -50,9 +50,9 @@ const FeaturedEmpty = ({ onNavigate }) => (
 
 const FeaturedList = ({ posts }) => (
   <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-    {posts.map((post) => (
+    {posts.map((post, key) => (
       <ArticleCard
-        key={post.id}
+        key={key}
         id={post.id}
         title={post.title}
         slug={post.slug}

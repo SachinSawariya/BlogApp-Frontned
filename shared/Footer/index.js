@@ -37,11 +37,11 @@ const Footer = () => {
               Empowering developers with AI insights, tutorials, and resources to build the future of technology.
             </p>
             <div className="mt-6 flex space-x-6">
-              {socialLinks.map((item) => {
+              {socialLinks.map((item, key) => {
                 const Icon = item.icon;
                 return (
                   <a
-                    key={item.name}
+                    key={key}
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
