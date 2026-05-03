@@ -1,6 +1,7 @@
 import ArticleDetailComponent from "@/components/Article-details/ArticleDetailsPage";
 import commonApi from "@/api";
 import { Metadata, ResolvingMetadata } from "next";
+import { Article } from "@/components/Articles/types/articlesTypes";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -17,7 +18,7 @@ export async function generateMetadata(
       action: "getArticlBySlug",
       parameters: [slug],
     });
-    const article = response.data;
+    const article: Article = response.data;
 
     if (!article) return { title: "Article Not Found" };
 
@@ -26,13 +27,26 @@ export async function generateMetadata(
     return {
       title: article.title,
       description: article.content
-        ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
+        ? article.content
+            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
+            .replace(/[#*`_~]/g, "") // Remove common markdown
+            .substring(0, 160)
+            .trim()
         : "Read this interesting article on Gyanvora.",
+
+      alternates: {
+        canonical: `https://gyanvora.vercel.app/articles/${slug}`,
+      },
       openGraph: {
         title: article.title,
-        description: article.content
-          ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
-          : "Read this interesting article on Gyanvora.",
+      description: article.content
+        ? article.content
+            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
+            .replace(/[#*`_~]/g, "") // Remove common markdown
+            .substring(0, 160)
+            .trim()
+        : "Read this interesting article on Gyanvora.",
+
         url: `https://gyanvora.vercel.app/articles/${slug}`,
         images: article.coverImage
           ? [article.coverImage, ...previousImages]
@@ -44,9 +58,14 @@ export async function generateMetadata(
       twitter: {
         card: "summary_large_image",
         title: article.title,
-        description: article.content
-          ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
-          : "Read this interesting article on Gyanvora.",
+      description: article.content
+        ? article.content
+            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
+            .replace(/[#*`_~]/g, "") // Remove common markdown
+            .substring(0, 160)
+            .trim()
+        : "Read this interesting article on Gyanvora.",
+
         images: article.coverImage ? [article.coverImage] : [],
       },
     };
@@ -58,6 +77,7 @@ export async function generateMetadata(
 
 export default async function ArticleDetailPage({ params }: Props) {
   const { slug } = await params;
+  let article: Article | undefined = undefined;
   let jsonLd = null;
 
   try {
@@ -65,16 +85,22 @@ export default async function ArticleDetailPage({ params }: Props) {
       action: "getArticlBySlug",
       parameters: [slug],
     });
-    const article = response.data;
+    article = response.data;
+
 
     if (article) {
       jsonLd = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         headline: article.title,
-        description: article.content
-          ? article.content.substring(0, 160).replace(/[#*]/g, "").trim()
-          : "Read this interesting article on Gyanvora.",
+      description: article.content
+        ? article.content
+            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
+            .replace(/[#*`_~]/g, "") // Remove common markdown
+            .substring(0, 160)
+            .trim()
+        : "Read this interesting article on Gyanvora.",
+
         image: article.coverImage,
         datePublished: article.createdAt,
         author: {
@@ -107,7 +133,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       )}
-      <ArticleDetailComponent />
+      <ArticleDetailComponent initialArticle={article || undefined} />
     </>
   );
 }

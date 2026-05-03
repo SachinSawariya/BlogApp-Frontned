@@ -5,8 +5,8 @@ import ArticlesSkeleton from "./ArticleSkeleton";
 import { useState } from "react";
 import { FiGrid, FiList, FiBookOpen, FiTrendingUp } from "react-icons/fi";
 
-export default function ArticlesPageComponent() {
-  const { sections, isLoading } = useArticles();
+export default function ArticlesPageComponent({ initialSections }: { initialSections?: any[] }) {
+  const { sections, isLoading } = useArticles(initialSections);
   const [globalViewMode, setGlobalViewMode] = useState<"grid" | "list">("grid");
 
   return (

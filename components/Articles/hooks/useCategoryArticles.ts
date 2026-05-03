@@ -9,24 +9,27 @@ interface UseCategoryArticlesProps {
   limit?: number;
 }
 
-export const useCategoryArticles = ({
-  slug,
-  page = 1,
-  limit = 12,
-}: UseCategoryArticlesProps) => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    totalArticles: 0,
-    hasNextPage: false,
-    hasPrevPage: false,
-  });
-  const [isLoading, setIsLoading] = useState(true);
+export const useCategoryArticles = (
+  { slug, page = 1, limit = 12 }: UseCategoryArticlesProps,
+  initialData?: { articles: Article[]; pagination: any },
+) => {
+  const [articles, setArticles] = useState<Article[]>(
+    initialData ? transformArticles(initialData.articles) : [],
+  );
+  const [pagination, setPagination] = useState(
+    initialData?.pagination || {
+      currentPage: 1,
+      totalPages: 1,
+      totalArticles: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+    },
+  );
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchCategoryArticles = useCallback(async () => {
-    if (!slug) return;
+    if (!slug || initialData) return;
 
     try {
       setIsLoading(true);

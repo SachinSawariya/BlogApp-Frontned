@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import commonApi from "@/api";
 import { Article } from "@/components/Articles/types/articlesTypes";
 
-export const useArticleDetail = (slug: string) => {
-  const [article, setArticle] = useState<Article | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+export const useArticleDetail = (slug: string, initialData?: Article | null) => {
+  const [article, setArticle] = useState<Article | null>(initialData || null);
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchArticleBySlug = useCallback(async () => {
-    if (!slug) return;
+    if (!slug || initialData) return;
     
     try {
       setIsLoading(true);
@@ -28,7 +28,7 @@ export const useArticleDetail = (slug: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [slug]);
+  }, [slug, initialData]);
 
   useEffect(() => {
     fetchArticleBySlug();

@@ -1,5 +1,7 @@
 import CategoryArticlesPageComponent from "@/components/Articles/CategoryArticlesPage";
 import { Metadata } from "next";
+import commonApi from "@/api";
+import { Article } from "@/components/Articles/types/articlesTypes";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -19,6 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${categoryName} Articles`,
     description: `Explore the latest articles and tutorials in ${categoryName}. Stay updated with expert insights on Gyanvora.`,
+    alternates: {
+      canonical: `https://gyanvora.vercel.app/categories/${slug}`,
+    },
     openGraph: {
       title: `${categoryName} - AI & Development Insights`,
       description: `Browse our collection of articles about ${categoryName}.`,
@@ -30,6 +35,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryArticlesPage({ params }: Props) {
   const { slug } = await params;
   const categoryName = formatSlug(slug);
+  let initialData: { articles: Article[]; pagination: any } | undefined = undefined;
+
+  try {
+    const response = await commonApi({
+      action: "getCategoryArticles",
+      parameters: [slug],
+    });
+    initialData = response.data;
+  } catch (error) {
+    console.error("Error fetching category articles for SSR:", error);
+  }
+
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -68,7 +85,7 @@ export default async function CategoryArticlesPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <CategoryArticlesPageComponent slug={slug} />
+      <CategoryArticlesPageComponent slug={slug} initialData={initialData || undefined} />
     </>
   );
 }

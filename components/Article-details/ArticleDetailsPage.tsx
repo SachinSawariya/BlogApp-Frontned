@@ -10,11 +10,11 @@ import ArticleDetailSkeleton from "./ArticleDetailSkeleton";
 import { useState, useEffect } from "react";
 import { Article } from "@/components/Articles/types/articlesTypes";
 
-const ArticleDetailComponent = () => {
+const ArticleDetailComponent = ({ initialArticle }: { initialArticle?: Article | null }) => {
   const params = useParams();
   const slug = params.slug as string;
   
-  const { article, isLoading: articleLoading } = useArticleDetail(slug);
+  const { article, isLoading: articleLoading } = useArticleDetail(slug, initialArticle);
   const { articles: categoryArticles, isLoading: categoryLoading } = useCategoryArticles(
     typeof article?.category === 'string' ? article.category.toLowerCase() : article?.category?.slug || ""
   );

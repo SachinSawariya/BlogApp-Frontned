@@ -12,12 +12,14 @@ import {
   FiList,
 } from "react-icons/fi";
 import { useState } from "react";
+import { Article } from "./types/articlesTypes";
 
 interface CategoryArticlesPageProps {
   slug: string;
+  initialData?: { articles: Article[]; pagination: any };
 }
 
-const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
+const CategoryArticlesPageComponent = ({ slug, initialData }: CategoryArticlesPageProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1");
@@ -29,7 +31,7 @@ const CategoryArticlesPageComponent = ({ slug }: CategoryArticlesPageProps) => {
       slug,
       page: currentPage,
       limit,
-    });
+    }, initialData);
 
   const categoryName = slug
     .split("-")

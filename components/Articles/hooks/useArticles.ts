@@ -8,17 +8,19 @@ interface ArticleSection {
   articles: Article[];
 }
 
-export const useArticles = () => {
+export const useArticles = (initialData?: any[]) => {
   const [sections, setSections] = useState<
     Array<{
       category: string;
       articles: Article[];
     }>
-  >([]);
-  const [isLoading, setIsLoading] = useState(true);
+  >(initialData || []);
+  const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchArticleSections = useCallback(async () => {
+    if (initialData && initialData.length > 0) return;
+    
     try {
       setIsLoading(true);
       const response = await commonApi({
@@ -40,7 +42,7 @@ export const useArticles = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [initialData]);
 
   useEffect(() => {
     fetchArticleSections();

@@ -55,6 +55,11 @@ export const metadata = {
     images: ["/og-image.png"],
     creator: "@gyanvora",
   },
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/logo.png",
+  },
   robots: {
     index: true,
     follow: true,

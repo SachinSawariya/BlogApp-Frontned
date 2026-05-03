@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "Gyanvora | Home",
   description:
     "Explore the latest in AI, Machine Learning, and Web Development. Expert tutorials and insights for modern developers.",
+  alternates: {
+    canonical: "https://gyanvora.vercel.app",
+  },
   openGraph: {
     title: "Gyanvora - AI for Developers",
     description:
