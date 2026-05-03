@@ -14,13 +14,14 @@ export const QuickActions = () => {
         <p className="text-blue-100 font-medium">Create and publish a new blog post to the site.</p>
       </Link>
 
-      <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50 hover:border-blue-100 transition-all">
-        <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6">
+      <Link href="/admin/manage" className="group p-8 bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50 hover:border-blue-100 hover:scale-[1.02] transition-all">
+        <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
           <FiLayout size={28} />
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">Manage Blogs</h3>
-        <p className="text-gray-500 font-medium">View, edit, or delete existing articles (Coming soon).</p>
-      </div>
+        <p className="text-gray-500 font-medium">View, edit, or delete your existing blog articles.</p>
+      </Link>
+
     </div>
   );
 };

@@ -33,8 +33,25 @@ export const apiList = {
     method: 'GET'
   },
   createBlog: {
-    url: () => `/${baseUrl}/blogs/`,
+    url: () => `/${baseUrl}/blogs`,
     method: 'POST'
+  },
+  getAdminBlogList: {
+    url: () => `/${baseUrl}/blogs/admin-articles`,
+    method: 'GET'
+  },
+  getAdminArticleBySlug: {
+    url: (slug) => `/${baseUrl}/blogs/admin-article/${slug}`,
+    method: 'GET'
+  },
+  updateBlog: {
+
+    url: (id) => `/${baseUrl}/blogs/${id}`,
+    method: 'PUT'
+  },
+  deleteBlog: {
+    url: (id) => `/${baseUrl}/blogs/${id}`,
+    method: 'DELETE'
   },
 
   // Categories
