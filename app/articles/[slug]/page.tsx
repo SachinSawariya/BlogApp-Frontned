@@ -27,11 +27,7 @@ export async function generateMetadata(
     return {
       title: article.title,
       description: article.content
-        ? article.content
-            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
-            .replace(/[#*`_~]/g, "") // Remove common markdown
-            .substring(0, 160)
-            .trim()
+        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
         : "Read this interesting article on Gyanvora.",
 
       alternates: {
@@ -40,11 +36,7 @@ export async function generateMetadata(
       openGraph: {
         title: article.title,
       description: article.content
-        ? article.content
-            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
-            .replace(/[#*`_~]/g, "") // Remove common markdown
-            .substring(0, 160)
-            .trim()
+        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
         : "Read this interesting article on Gyanvora.",
 
         url: `https://gyanvora.vercel.app/articles/${slug}`,
@@ -59,11 +51,7 @@ export async function generateMetadata(
         card: "summary_large_image",
         title: article.title,
       description: article.content
-        ? article.content
-            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
-            .replace(/[#*`_~]/g, "") // Remove common markdown
-            .substring(0, 160)
-            .trim()
+        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
         : "Read this interesting article on Gyanvora.",
 
         images: article.coverImage ? [article.coverImage] : [],
@@ -94,11 +82,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         "@type": "BlogPosting",
         headline: article.title,
       description: article.content
-        ? article.content
-            .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Remove links but keep text
-            .replace(/[#*`_~]/g, "") // Remove common markdown
-            .substring(0, 160)
-            .trim()
+        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
         : "Read this interesting article on Gyanvora.",
 
         image: article.coverImage,

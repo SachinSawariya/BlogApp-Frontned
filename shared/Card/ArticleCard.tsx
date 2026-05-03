@@ -11,7 +11,6 @@ import {
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import type { MouseEvent, ReactNode } from "react";
-import ReactMarkdown from "react-markdown";
 
 interface ArticleCardProps {
   id: string | number;
@@ -206,7 +205,7 @@ const ArticleCard = ({
             </h3>
 
             <div className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-              <ReactMarkdown>{excerpt}</ReactMarkdown>
+              <div dangerouslySetInnerHTML={{ __html: excerpt || '' }} />
             </div>
 
             {/* Stats bar */}
@@ -274,7 +273,7 @@ const ArticleCard = ({
               </h3>
 
               <div className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                <ReactMarkdown>{excerpt}</ReactMarkdown>
+                <div dangerouslySetInnerHTML={{ __html: excerpt || '' }} />
               </div>
             </div>
 

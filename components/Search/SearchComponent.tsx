@@ -94,8 +94,10 @@ export default function SearchComponent({ initialQuery }: SearchComponentProps) 
   };
 
   const truncateContent = (content: string, maxLength: number = 150) => {
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength) + "...";
+    const plainText = content ? content.replace(/<[^>]*>?/gm, '') : '';
+
+    if (plainText.length <= maxLength) return plainText;
+    return plainText.substring(0, maxLength) + "...";
   };
 
   return (

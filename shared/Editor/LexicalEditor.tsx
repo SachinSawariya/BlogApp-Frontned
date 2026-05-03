@@ -6,8 +6,7 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
-import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } from "@lexical/markdown";
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useEffect, useState } from "react";
 import { 
@@ -19,7 +18,8 @@ import {
   UNDO_COMMAND,
   REDO_COMMAND,
   FORMAT_ELEMENT_COMMAND,
-  ElementFormatType
+  ElementFormatType,
+  $getRoot
 } from "lexical";
 
 
@@ -465,12 +465,11 @@ export default function LexicalEditor({ value, onChange, placeholder }: LexicalE
           <LinkPlugin />
           <AutoLinkPlugin matchers={MATCHERS} />
           <TabIndentationPlugin />
-          <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
           <OnChangePlugin
-            onChange={(editorState) => {
+            onChange={(editorState, editor) => {
               editorState.read(() => {
-                const markdown = $convertToMarkdownString(TRANSFORMERS);
-                onChange(markdown);
+                const html = $generateHtmlFromNodes(editor, null);
+                onChange(html);
               });
             }}
           />
@@ -488,7 +487,14 @@ function InitialValuePlugin({ value }: { value: string }) {
   useEffect(() => {
     if (isFirstRender && value) {
       editor.update(() => {
-        $convertFromMarkdownString(value, TRANSFORMERS);
+        // Clear existing content if any
+        const root = $getRoot();
+        root.clear();
+
+        const parser = new DOMParser();
+        const dom = parser.parseFromString(value, 'text/html');
+        const nodes = $generateNodesFromDOM(editor, dom);
+        root.append(...nodes);
       });
       setIsFirstRender(false);
     }
