@@ -32,6 +32,10 @@ export const apiList = {
     url: (slug, page = 1, limit = 12) => `/${baseUrl}/blogs/articles/${slug}?page=${page}&limit=${limit}`,
     method: 'GET'
   },
+  getArticlesByTag: {
+    url: (tag, page = 1, limit = 12) => `/${baseUrl}/blogs/tag/${tag}?page=${page}&limit=${limit}`,
+    method: 'GET'
+  },
   createBlog: {
     url: () => `/${baseUrl}/blogs`,
     method: 'POST'

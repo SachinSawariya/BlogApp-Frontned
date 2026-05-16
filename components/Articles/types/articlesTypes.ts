@@ -3,6 +3,7 @@ export interface Article {
   title: string;
   content: string;
   category: string | { name: string; slug: string };
+  categoryId?: { name: string; slug: string };
   readTime?: string;
   slug: string;
   likes?: number;

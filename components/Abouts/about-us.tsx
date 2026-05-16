@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { FaGithub, FaTwitter, FaLinkedin, FaRocket, FaUsers, FaShieldAlt, FaArrowRight } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaRocket, FaUsers, FaShieldAlt, FaArrowRight, FaInstagram } from 'react-icons/fa';
 import { FiAward } from 'react-icons/fi';
 import Link from 'next/link';
 
@@ -127,10 +127,12 @@ const AboutUs = () => {
                 A diverse team of engineers, writers, and visionaries committed to tech excellence.
               </p>
             </div>
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95">
+            <Link className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
+              href="/contact"
+            >
               Join Our Team
               <FaArrowRight />
-            </button>
+            </Link>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
@@ -155,9 +157,9 @@ const AboutUs = () => {
                           <FaLinkedin size={24} />
                         </a>
                       )}
-                      {member.socials.twitter && (
-                        <a href={member.socials.twitter} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white hover:bg-blue-400 hover:text-white transition-all">
-                          <FaTwitter size={24} />
+                      {member.socials.instagram && (
+                        <a href={member.socials.instagram} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white hover:bg-blue-400 hover:text-white transition-all">
+                          <FaInstagram size={24} />
                         </a>
                       )}
                     </div>
@@ -207,7 +209,7 @@ const teamMembers = [
     socials: {
       github: 'https://github.com/SachinSawariya',
       linkedin: 'https://www.linkedin.com/in/sachin-kumar-a91a62223/',
-      twitter: 'https://twitter.com'
+      instagram: 'https://www.instagram.com/sachin_.sawariya/'
     }
   },
   {
@@ -218,7 +220,7 @@ const teamMembers = [
     socials: {
       github: 'https://github.com',
       linkedin: 'https://linkedin.com',
-      twitter: 'https://twitter.com'
+      instagram: 'https://instagram.com'
     }
   },
   {
@@ -229,7 +231,7 @@ const teamMembers = [
     socials: {
       github: 'https://github.com',
       linkedin: 'https://linkedin.com',
-      twitter: 'https://twitter.com'
+      instagram: 'https://instagram.com'
     }
   }
 ];

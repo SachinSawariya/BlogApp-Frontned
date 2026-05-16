@@ -105,31 +105,36 @@ export default function RelatedLinks({ article, relatedArticles = [] }: RelatedL
           <FiExternalLink className="text-blue-400" />
           Share Article
         </h4>
-        <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
           <button
-            onClick={() => window.open(`https://twitter.com/intent/tweet?url=${window.location.href}&text=${article.title}`, '_blank')}
-            className="flex items-center justify-center gap-3 w-full bg-white/10 hover:bg-white hover:text-gray-900 border border-white/10 px-6 py-4 rounded-2xl text-[15px] font-extrabold transition-all duration-300 backdrop-blur-md"
+            onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`, '_blank')}
+            className="flex items-center justify-center gap-3 w-full bg-white/10 hover:bg-white hover:text-gray-900 border border-white/10 px-4 py-4 rounded-2xl text-[14px] font-extrabold transition-all duration-300 backdrop-blur-md"
           >
-            Twitter
+            LinkedIn
           </button>
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, '_blank')}
-              className="bg-white/5 hover:bg-white hover:text-gray-900 border border-white/10 px-4 py-4 rounded-2xl text-[13px] font-extrabold transition-all duration-300"
-            >
-              Facebook
-            </button>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert("Link copied to clipboard!");
-              }}
-              className="bg-white/5 hover:bg-white hover:text-gray-900 border border-white/10 px-4 py-4 rounded-2xl text-[13px] font-extrabold transition-all duration-300"
-            >
-              Copy link
-            </button>
-          </div>
+          <button
+            onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + " - " + window.location.href)}`, '_blank')}
+            className="flex items-center justify-center gap-3 w-full bg-white/10 hover:bg-white hover:text-gray-900 border border-white/10 px-4 py-4 rounded-2xl text-[14px] font-extrabold transition-all duration-300 backdrop-blur-md"
+          >
+            WhatsApp
+          </button>
+          <button
+            onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`, '_blank')}
+            className="bg-white/5 hover:bg-white hover:text-gray-900 border border-white/10 px-4 py-4 rounded-2xl text-[13px] font-extrabold transition-all duration-300"
+          >
+            Facebook
+          </button>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              alert("Link copied to clipboard!");
+            }}
+            className="bg-white/5 hover:bg-white hover:text-gray-900 border border-white/10 px-4 py-4 rounded-2xl text-[13px] font-extrabold transition-all duration-300"
+          >
+            Copy link
+          </button>
         </div>
+
       </div>
     </div>
   );

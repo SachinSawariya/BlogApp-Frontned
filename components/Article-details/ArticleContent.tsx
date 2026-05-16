@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FiCalendar, FiClock, FiUser, FiHeart, FiBookmark } from "react-icons/fi";
 import { Article } from "@/components/Articles/types/articlesTypes";
 import Image from "next/image";
@@ -142,23 +143,31 @@ export default function ArticleContent({ article, isLoading }: ArticleContentPro
               Categorized In
             </span>
             {article.category && (
-              <span className="bg-blue-50 text-blue-700 border border-blue-100/50 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 cursor-pointer capitalize">
-                {typeof article.category === 'string' ? article.category : article.category.name}
-              </span>
+              <Link href={`/categories/${typeof article.category === 'string' ? article.category.toLowerCase().replace(/ /g, '-') : article.category.slug}`}>
+                <span className="bg-blue-50 text-blue-700 border border-blue-100/50 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 cursor-pointer capitalize">
+                  {typeof article.category === 'string' ? article.category : article.category.name}
+                </span>
+              </Link>
             )}
             {article.tags && article.tags.map((tag, index) => (
-              <span key={index} className="bg-gray-50 text-gray-600 border border-gray-100 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-white hover:border-blue-200 hover:text-blue-600 hover:shadow-md transition-all duration-300 cursor-pointer">
-                #{tag}
-              </span>
+              <Link key={index} href={`/tags/${tag.toLowerCase()}`}>
+                <span className="bg-gray-50 text-gray-600 border border-gray-100 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-white hover:border-blue-200 hover:text-blue-600 hover:shadow-md transition-all duration-300 cursor-pointer">
+                  #{tag}
+                </span>
+              </Link>
             ))}
             {!article.tags && (
               <>
-                <span className="bg-gray-50 text-gray-600 border border-gray-100 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-white transition-all cursor-pointer">
-                  #Blog
-                </span>
-                <span className="bg-gray-50 text-gray-600 border border-gray-100 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-white transition-all cursor-pointer">
-                  #Tech
-                </span>
+                <Link href="/tags/blog">
+                  <span className="bg-gray-50 text-gray-600 border border-gray-100 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-white transition-all cursor-pointer">
+                    #Blog
+                  </span>
+                </Link>
+                <Link href="/tags/tech">
+                  <span className="bg-gray-50 text-gray-600 border border-gray-100 px-5 py-2 rounded-2xl text-sm font-bold hover:bg-white transition-all cursor-pointer">
+                    #Tech
+                  </span>
+                </Link>
               </>
             )}
           </div>

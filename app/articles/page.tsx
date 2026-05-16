@@ -25,11 +25,17 @@ export default async function ArticlesPage() {
     
     // Group articles by category
     const grouped = articles.reduce((acc: Record<string, Article[]>, article) => {
-      const catName = typeof article.category === 'string' ? article.category : article.category.name;
+      let catName = "Uncategorized";
+      if (article.category) {
+        catName = typeof article.category === 'string' ? article.category : article.category.name;
+      } else if (article.categoryId) {
+        catName = article.categoryId.name || "Uncategorized";
+      }
+
       if (!acc[catName]) acc[catName] = [];
       acc[catName].push(article);
       return acc;
-    }, {});
+    }, {} as Record<string, Article[]>);
 
     sections = Object.keys(grouped).map(cat => ({
       category: cat,

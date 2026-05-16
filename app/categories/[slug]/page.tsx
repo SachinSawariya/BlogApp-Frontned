@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${categoryName} Articles`,
     description: `Explore the latest articles and tutorials in ${categoryName}. Stay updated with expert insights on Gyanvora.`,
+    keywords: [categoryName, "Tutorials", "Guides", "Insights", "Gyanvora"],
     alternates: {
       canonical: `https://gyanvora.vercel.app/categories/${slug}`,
     },

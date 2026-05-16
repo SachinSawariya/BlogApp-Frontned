@@ -29,6 +29,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Error fetching categories for sitemap:", error);
   }
 
+  // Extract unique tags from articles
+  const allTags = new Set<string>();
+  articles.forEach((article: Article) => {
+    if (article.tags && Array.isArray(article.tags)) {
+      article.tags.forEach((tag) => allTags.add(tag.toLowerCase()));
+    }
+  });
+
+  const tagEntries: MetadataRoute.Sitemap = Array.from(allTags).map((tag) => ({
+    url: `${baseUrl}/tags/${tag}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.5,
+  }));
+
   const articleEntries: MetadataRoute.Sitemap = articles.map(
     (article: Article) => ({
       url: `${baseUrl}/articles/${article.slug}`,
@@ -82,5 +97,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  return [...staticPages, ...articleEntries, ...categoryEntries];
+  return [
+    ...staticPages,
+    ...articleEntries,
+    ...categoryEntries,
+    ...tagEntries,
+  ];
 }

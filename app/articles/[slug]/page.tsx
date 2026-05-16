@@ -29,16 +29,15 @@ export async function generateMetadata(
       description: article.content
         ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
         : "Read this interesting article on Gyanvora.",
-
+      keywords: article.tags || [],
       alternates: {
         canonical: `https://gyanvora.vercel.app/articles/${slug}`,
       },
       openGraph: {
         title: article.title,
-      description: article.content
-        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
-        : "Read this interesting article on Gyanvora.",
-
+        description: article.content
+          ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
+          : "Read this interesting article on Gyanvora.",
         url: `https://gyanvora.vercel.app/articles/${slug}`,
         images: article.coverImage
           ? [article.coverImage, ...previousImages]
@@ -46,14 +45,14 @@ export async function generateMetadata(
         type: "article",
         publishedTime: article.createdAt,
         authors: [article.authorName || "Gyanvora Team"],
+        tags: article.tags,
       },
       twitter: {
         card: "summary_large_image",
         title: article.title,
-      description: article.content
-        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
-        : "Read this interesting article on Gyanvora.",
-
+        description: article.content
+          ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
+          : "Read this interesting article on Gyanvora.",
         images: article.coverImage ? [article.coverImage] : [],
       },
     };
@@ -81,12 +80,12 @@ export default async function ArticleDetailPage({ params }: Props) {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         headline: article.title,
-      description: article.content
-        ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
-        : "Read this interesting article on Gyanvora.",
-
+        description: article.content
+          ? article.content.replace(/<[^>]*>?/gm, '').substring(0, 160).trim()
+          : "Read this interesting article on Gyanvora.",
         image: article.coverImage,
         datePublished: article.createdAt,
+        dateModified: article.updatedAt || article.createdAt,
         author: {
           "@type": "Person",
           name: article.authorName || "Gyanvora Team",
@@ -103,6 +102,8 @@ export default async function ArticleDetailPage({ params }: Props) {
           "@type": "WebPage",
           "@id": `https://gyanvora.vercel.app/articles/${slug}`,
         },
+        keywords: article.tags?.join(", "),
+        articleSection: typeof article.category === 'string' ? article.category : article.category?.name,
       };
     }
   } catch (error) {

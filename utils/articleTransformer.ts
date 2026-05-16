@@ -14,7 +14,7 @@ export const transformArticle = (apiArticle: any): Article => {
     _id: apiArticle.id || apiArticle._id || '',
     title: apiArticle.title || 'Untitled',
     content: apiArticle.content || apiArticle.excerpt || '',
-    category: apiArticle.category || 'Uncategorized',
+    category: apiArticle.category || apiArticle.categoryId || 'Uncategorized',
     slug: apiArticle.slug || '',
     readTime: apiArticle.readTime || '5 min read',
     coverImage: apiArticle.imageUrl || apiArticle.coverImage || '',
