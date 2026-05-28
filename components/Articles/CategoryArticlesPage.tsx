@@ -135,27 +135,19 @@ const CategoryArticlesPageComponent = ({ slug, initialData }: CategoryArticlesPa
               }`}
             >
               {articles.map((article, index) => (
-                <div
+                <ArticleCard
                   key={article._id || index}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animation: "fadeInUp 0.6s ease-out forwards",
-                    opacity: 0,
-                  }}
-                >
-                  <ArticleCard
-                    id={article._id}
-                    title={article.title}
-                    slug={article.slug}
-                    category={categoryName}
-                    excerpt={article.content}
-                    readTime={article.readTime}
-                    imageUrl={article.coverImage}
-                    likes={article.likes}
-                    comments={article.comments}
-                    viewMode={viewMode}
-                  />
-                </div>
+                  id={article._id}
+                  title={article.title}
+                  slug={article.slug}
+                  category={categoryName}
+                  excerpt={article.content}
+                  readTime={article.readTime}
+                  imageUrl={article.coverImage}
+                  likes={article.likes}
+                  comments={article.comments}
+                  viewMode={viewMode}
+                />
               ))}
             </div>
 
@@ -172,23 +164,6 @@ const CategoryArticlesPageComponent = ({ slug, initialData }: CategoryArticlesPa
           </>
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animation-delay-150 {
-          animation-delay: 150ms;
-        }
-      `}</style>
     </div>
   );
 };

@@ -2,14 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import commonApi from "@/api";
 import { transformCategories, Category } from "@/utils/categoryTransformer";
 
-export const useCategories = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export const useCategories = (initialData?: Category[]) => {
+  const [categories, setCategories] = useState<Category[]>(initialData || []);
+  const [isLoading, setIsLoading] = useState(!(initialData && initialData.length > 0));
   const [error, setError] = useState<Error | null>(null);
 
   const fetchCategories = useCallback(async () => {
     try {
       setIsLoading(true);
+      setError(null);
       const response = await commonApi({
         action: "getTopCategories",
       });
@@ -29,8 +30,17 @@ export const useCategories = () => {
   }, []);
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    if (initialData && initialData.length > 0) {
+      setCategories(initialData);
+      setIsLoading(false);
+    }
+  }, [initialData]);
+
+  useEffect(() => {
+    if (categories.length === 0 && isLoading) {
+      fetchCategories();
+    }
+  }, [fetchCategories, categories.length, isLoading]);
 
   return {
     categories,

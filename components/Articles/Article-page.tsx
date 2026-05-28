@@ -72,37 +72,16 @@ export default function ArticlesPageComponent({ initialSections }: { initialSect
         ) : (
           <div className="space-y-20">
             {sections?.map((section, index) => (
-              <div
+              <ArticleSection
                 key={index}
-                style={{
-                  animationDelay: `${index * 200}ms`,
-                  animation: "fadeInUp 0.8s ease-out forwards",
-                  opacity: 0,
-                }}
-              >
-                <ArticleSection
-                  category={section.category}
-                  articles={section.articles}
-                  viewMode={globalViewMode}
-                />
-              </div>
+                category={section.category}
+                articles={section.articles}
+                viewMode={globalViewMode}
+              />
             ))}
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 }

@@ -8,10 +8,11 @@ export const useArticleDetail = (slug: string, initialData?: Article | null) => 
   const [error, setError] = useState<Error | null>(null);
 
   const fetchArticleBySlug = useCallback(async () => {
-    if (!slug || initialData) return;
+    if (!slug) return;
     
     try {
       setIsLoading(true);
+      setError(null);
       const response = await commonApi({
         action: "getArticlBySlug",
         parameters: [slug],
@@ -28,11 +29,20 @@ export const useArticleDetail = (slug: string, initialData?: Article | null) => 
     } finally {
       setIsLoading(false);
     }
-  }, [slug, initialData]);
+  }, [slug]);
 
   useEffect(() => {
-    fetchArticleBySlug();
-  }, [fetchArticleBySlug]);
+    if (initialData) {
+      setArticle(initialData);
+      setIsLoading(false);
+    }
+  }, [initialData]);
+
+  useEffect(() => {
+    if (!article && isLoading) {
+      fetchArticleBySlug();
+    }
+  }, [fetchArticleBySlug, article, isLoading]);
 
   return {
     article,

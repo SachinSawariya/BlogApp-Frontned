@@ -15,22 +15,20 @@ export const useArticles = (initialData?: any[]) => {
       articles: Article[];
     }>
   >(initialData || []);
-  const [isLoading, setIsLoading] = useState(!initialData);
+  const [isLoading, setIsLoading] = useState(!(initialData && initialData.length > 0));
   const [error, setError] = useState<Error | null>(null);
 
   const fetchArticleSections = useCallback(async () => {
-    if (initialData && initialData.length > 0) return;
-    
     try {
       setIsLoading(true);
+      setError(null);
       const response = await commonApi({
         action: "getArticleSections",
       });
       const transformedSections = (response.data || []).map((section: ArticleSection) => ({
         ...section,
-        articles: transformArticles(section.articles)
+        articles: Array.isArray(section.articles) ? transformArticles(section.articles) : []
       }));
-
       setSections(transformedSections);
     } catch (err) {
       console.error("Error fetching article sections:", err);
@@ -42,11 +40,20 @@ export const useArticles = (initialData?: any[]) => {
     } finally {
       setIsLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (initialData && initialData.length > 0) {
+      setSections(initialData);
+      setIsLoading(false);
+    }
   }, [initialData]);
 
   useEffect(() => {
-    fetchArticleSections();
-  }, [fetchArticleSections]);
+    if (sections.length === 0 && isLoading) {
+      fetchArticleSections();
+    }
+  }, [fetchArticleSections, sections.length, isLoading]);
 
   return {
     sections,

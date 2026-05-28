@@ -30,11 +30,11 @@ export const useTagArticles = (
 
   const [displayTag, setDisplayTag] = useState<string>(initialData?.tag || tag);
 
-  const fetchTagArticles = useCallback(async () => {
+  const fetchTagArticles = useCallback(async (forceFetch = false) => {
     if (!tag) return;
     
     // If we have initial data and it's the first page, we don't need to fetch
-    if (initialData && page === 1) return;
+    if (initialData && page === 1 && !forceFetch) return;
 
     try {
       setIsLoading(true);
@@ -70,6 +70,15 @@ export const useTagArticles = (
       setIsLoading(false);
     }
   }, [tag, page, limit, initialData]);
+
+  useEffect(() => {
+    if (initialData && page === 1) {
+      setArticles(transformArticles(initialData.articles));
+      setPagination(initialData.pagination);
+      if (initialData.tag) setDisplayTag(initialData.tag);
+      setIsLoading(false);
+    }
+  }, [initialData, page]);
 
   useEffect(() => {
     fetchTagArticles();

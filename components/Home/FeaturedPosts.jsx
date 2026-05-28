@@ -53,13 +53,13 @@ const FeaturedList = ({ posts }) => (
     {posts.map((post, key) => (
       <ArticleCard
         key={key}
-        id={post.id}
+        id={post._id || post.id}
         title={post.title}
         slug={post.slug}
-        category={post.category}
+        category={typeof post.category === 'string' ? post.category : post.category?.name || 'Uncategorized'}
         excerpt={post.content}
         readTime={post.readTime}
-        imageUrl={post.imageUrl}
+        imageUrl={post.coverImage || post.imageUrl}
         likes={post.likes}
         comments={post.comments}
       />

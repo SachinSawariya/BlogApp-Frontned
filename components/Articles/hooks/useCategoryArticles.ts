@@ -28,8 +28,9 @@ export const useCategoryArticles = (
   const [isLoading, setIsLoading] = useState(!initialData);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchCategoryArticles = useCallback(async () => {
-    if (!slug || initialData) return;
+  const fetchCategoryArticles = useCallback(async (forceFetch = false) => {
+    if (!slug) return;
+    if (initialData && page === 1 && !forceFetch) return;
 
     try {
       setIsLoading(true);
@@ -63,7 +64,15 @@ export const useCategoryArticles = (
     } finally {
       setIsLoading(false);
     }
-  }, [slug, page, limit]);
+  }, [slug, page, limit, initialData]);
+
+  useEffect(() => {
+    if (initialData && page === 1) {
+      setArticles(transformArticles(initialData.articles));
+      setPagination(initialData.pagination);
+      setIsLoading(false);
+    }
+  }, [initialData, page]);
 
   useEffect(() => {
     fetchCategoryArticles();

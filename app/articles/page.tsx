@@ -2,6 +2,7 @@ import ArticlesPageComponent from "@/components/Articles/Article-page";
 import { Metadata } from "next";
 import commonApi from "@/api";
 import { Article } from "@/components/Articles/types/articlesTypes";
+import { transformArticles } from "@/utils/articleTransformer";
 
 export const metadata: Metadata = {
   title: "Articles",
@@ -20,10 +21,10 @@ export const metadata: Metadata = {
 export default async function ArticlesPage() {
   let sections: { category: string; articles: Article[] }[] = [];
   try {
-    const response = await commonApi({ action: "getBlogList" });
-    const articles: Article[] = response.data || [];
+    const response = await commonApi({ action: "getBlogList", config: { cache: "no-store" } });
+    const rawArticles = response.data || [];
+    const articles: Article[] = transformArticles(rawArticles);
     
-    // Group articles by category
     const grouped = articles.reduce((acc: Record<string, Article[]>, article) => {
       let catName = "Uncategorized";
       if (article.category) {

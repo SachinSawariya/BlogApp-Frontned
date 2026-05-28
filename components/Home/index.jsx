@@ -25,9 +25,9 @@ const ErrorState = () => (
   </div>
 );
 
-export default function HomePage() {
-  const { articles: featuredPosts, isLoading: isLoadingFeatured, error: featuredError } = useFeaturedArticles();
-  const { categories, isLoading: isLoadingCategories, error: categoriesError } = useCategories();
+export default function HomePage({ initialFeatured, initialCategories }) {
+  const { articles: featuredPosts, isLoading: isLoadingFeatured, error: featuredError } = useFeaturedArticles(initialFeatured);
+  const { categories, isLoading: isLoadingCategories, error: categoriesError } = useCategories(initialCategories);
 
   const hasError = featuredError || categoriesError;
 

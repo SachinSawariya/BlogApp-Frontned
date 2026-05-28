@@ -52,42 +52,20 @@ export const ArticleSection = ({
           : "space-y-4 md:space-y-6"
       }`}>
         {articles.map((article, index) => (
-          <div
+          <ArticleCard
             key={article._id || index}
-            style={{ 
-              animationDelay: `${index * 100}ms`,
-              animation: "fadeInUp 0.6s ease-out forwards",
-              opacity: 0
-            }}
-          >
-            <ArticleCard
-              id={article._id}
-              title={article.title}
-              category={category}
-              slug={article.slug}
-              excerpt={article.content}
-              readTime={article.readTime}
-              imageUrl={article.coverImage}
-              likes={article.likes}
-              viewMode={viewMode}
-            />
-          </div>
+            id={article._id}
+            title={article.title}
+            category={category}
+            slug={article.slug}
+            excerpt={article.content}
+            readTime={article.readTime}
+            imageUrl={article.coverImage}
+            likes={article.likes}
+            viewMode={viewMode}
+          />
         ))}
       </div>
-
-      {/* Custom Animation Styles */}
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </section>
   );
 };
