@@ -21,26 +21,12 @@ export const metadata: Metadata = {
 export default async function ArticlesPage() {
   let sections: { category: string; articles: Article[] }[] = [];
   try {
-    const response = await commonApi({ action: "getBlogList", config: { cache: "no-store" } });
-    const rawArticles = response.data || [];
-    const articles: Article[] = transformArticles(rawArticles);
-    
-    const grouped = articles.reduce((acc: Record<string, Article[]>, article) => {
-      let catName = "Uncategorized";
-      if (article.category) {
-        catName = typeof article.category === 'string' ? article.category : article.category.name;
-      } else if (article.categoryId) {
-        catName = article.categoryId.name || "Uncategorized";
-      }
+    const response = await commonApi({ action: "getArticleSections", config: { cache: "no-store" } });
+    const rawSections = response.data || [];
 
-      if (!acc[catName]) acc[catName] = [];
-      acc[catName].push(article);
-      return acc;
-    }, {} as Record<string, Article[]>);
-
-    sections = Object.keys(grouped).map(cat => ({
-      category: cat,
-      articles: grouped[cat]
+    sections = rawSections.map((section: any) => ({
+      category: section.category,
+      articles: Array.isArray(section.articles) ? transformArticles(section.articles) : []
     }));
   } catch (error) {
     console.error("Error fetching articles for SSR:", error);
