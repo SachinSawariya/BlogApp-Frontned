@@ -52,7 +52,7 @@ export default async function Home() {
       name: "Gyanvora",
       logo: {
         "@type": "ImageObject",
-        url: "https://gyanvora.vercel.app/logo.png",
+        url: "https://gyanvora.vercel.app/logo.svg",
       },
     },
   };

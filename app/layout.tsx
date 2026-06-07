@@ -87,8 +87,11 @@ export const metadata = {
   },
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/logo.png",
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+    ],
+    apple: "/logo.svg",
+    shortcut: "/logo.svg",
   },
   robots: {
     index: true,

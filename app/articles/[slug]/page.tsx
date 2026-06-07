@@ -95,7 +95,7 @@ export default async function ArticleDetailPage({ params }: Props) {
           name: "Gyanvora",
           logo: {
             "@type": "ImageObject",
-            url: "https://gyanvora.vercel.app/logo.png",
+            url: "https://gyanvora.vercel.app/logo.svg",
           },
         },
         mainEntityOfPage: {
