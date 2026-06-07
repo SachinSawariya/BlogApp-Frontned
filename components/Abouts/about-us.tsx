@@ -1,10 +1,16 @@
+'use client'
 import React from 'react';
 import Image from 'next/image';
 import { FaGithub, FaLinkedin, FaRocket, FaUsers, FaShieldAlt, FaArrowRight, FaInstagram } from 'react-icons/fa';
 import { FiAward } from 'react-icons/fi';
 import Link from 'next/link';
+import { useCategory } from '../Categories/hooks/useCategory';
 
 const AboutUs = () => {
+  const { 
+    categories, 
+  } = useCategory();
+  console.log("categories => ", categories)
   return (
     <div className="min-h-screen bg-white overflow-hidden">
       {/* Hero Section with Mesh Gradient */}
@@ -73,11 +79,13 @@ const AboutUs = () => {
                 </p>
                 <div className="grid grid-cols-2 gap-4 lg:gap-6 pt-2">
                   <div className="p-6 bg-white rounded-3xl shadow-sm border border-gray-100 text-center lg:text-left">
-                    <h4 className="text-3xl lg:text-4xl font-bold text-blue-600 mb-1">10k+</h4>
+                    <h4 className="text-3xl lg:text-4xl font-bold text-blue-600 mb-1">100+</h4>
                     <p className="text-sm lg:text-base text-gray-400 font-bold uppercase tracking-wider">Readers</p>
                   </div>
                   <div className="p-6 bg-white rounded-3xl shadow-sm border border-gray-100 text-center lg:text-left">
-                    <h4 className="text-3xl lg:text-4xl font-bold text-indigo-600 mb-1">500+</h4>
+                    <h4 className="text-3xl lg:text-4xl font-bold text-indigo-600 mb-1">
+                      {categories.reduce((sum, cat) => sum + cat.postCount, 0)}+
+                    </h4>
                     <p className="text-sm lg:text-base text-gray-400 font-bold uppercase tracking-wider">Articles</p>
                   </div>
                 </div>

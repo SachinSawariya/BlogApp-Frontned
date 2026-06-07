@@ -71,6 +71,17 @@ export const apiList = {
     url: (category) => `/${baseUrl}/categories/${category}/articles/titles`,
     method: 'GET'
   },
+
+  // Contacts
+  saveContactFormMsgToDB: {
+    url: () => `/${baseUrl}/contact/send-msg`,
+    method: 'POST'
+  },
+  getAllMsg: {
+    url: () => `/${baseUrl}/contact/get-msgs`,
+    method: 'GET'
+  },
+
 };
 
 export default apiList;

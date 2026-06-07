@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { FiPlusCircle, FiLayout } from 'react-icons/fi';
+import { FiPlusCircle, FiLayout, FiMessageSquare } from 'react-icons/fi';
 
 export const QuickActions = () => {
   return (
@@ -22,6 +22,17 @@ export const QuickActions = () => {
         <p className="text-gray-500 font-medium">View, edit, or delete your existing blog articles.</p>
       </Link>
 
+      <Link href="/admin/messages" className="group p-8 bg-white rounded-3xl border border-gray-100 shadow-xl shadow-gray-100/50 hover:border-indigo-100 hover:scale-[1.02] transition-all sm:col-span-2">
+        <div className="flex items-center gap-6">
+          <div className="flex-shrink-0 w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:scale-110 transition-transform">
+            <FiMessageSquare size={28} />
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">Messages</h3>
+            <p className="text-gray-500 font-medium">View contact form submissions sent by users.</p>
+          </div>
+        </div>
+      </Link>
     </div>
   );
 };

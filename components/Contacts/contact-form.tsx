@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
-import { FiMail, FiMapPin, FiPhone, FiSend, FiCheckCircle } from 'react-icons/fi';
+import { FiMail, FiMapPin, FiPhone, FiSend, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
+import commonApi from '@/api';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -9,21 +10,30 @@ export default function ContactForm() {
     subject: '',
     message: ''
   });
-  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
-    setTimeout(() => {
+    setErrorMsg('');
+    try {
+      await commonApi({
+        action: 'saveContactFormMsgToDB',
+        data: formData,
+      });
       setStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
+      setTimeout(() => setStatus('idle'), 4000);
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Something went wrong. Please try again.');
+      setStatus('error');
+    }
   };
 
   return (
@@ -161,11 +171,22 @@ export default function ContactForm() {
                     />
                   </div>
 
+                  {status === 'error' && (
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-medium">
+                      <FiAlertCircle size={16} />
+                      {errorMsg}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     disabled={status === 'submitting' || status === 'success'}
-                    className={`w-full py-4 rounded-xl font-bold text-base flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-blue-500/20 active:scale-95 ${
-                      status === 'success' ? 'bg-green-600 text-white' : 'bg-blue-600 text-white hover:bg-blue-700'
+                    className={`w-full py-4 rounded-xl font-bold text-base flex items-center justify-center gap-3 transition-all duration-300 shadow-lg active:scale-95 ${
+                      status === 'success'
+                        ? 'bg-green-600 text-white shadow-green-500/20'
+                        : status === 'error'
+                        ? 'bg-blue-600 text-white shadow-blue-500/20 hover:bg-blue-700'
+                        : 'bg-blue-600 text-white shadow-blue-500/20 hover:bg-blue-700'
                     }`}
                   >
                     {status === 'submitting' ? (
