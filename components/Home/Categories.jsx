@@ -1,20 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { FiFolder, FiPlus } from "react-icons/fi";
+import { FiFolder, FiArrowRight, FiGrid } from "react-icons/fi";
 import CategoryCard from "@/shared/Card/CategoryCard";
 import CategoryCardSkeleton from "@/shared/Skeleton/CategoryCardSkeleton";
 
 const CategoryHeader = ({ onNavigate }) => (
   <div className="flex justify-between items-center mb-12">
-    <h2 className="text-3xl font-bold text-gray-900">
+    <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+      <FiGrid className="text-blue-600" />
       Browse by Category
     </h2>
     <button
       onClick={onNavigate}
-      className="text-blue-600 hover:text-blue-800 font-bold flex items-center gap-2 group"
+      className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 group"
     >
       View All
-      <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
+      <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
     </button>
   </div>
 );

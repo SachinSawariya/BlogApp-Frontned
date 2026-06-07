@@ -213,14 +213,14 @@ const teamMembers = [
     }
   },
   {
-    name: 'Jane Smith',
-    role: 'Technical Writer & AI Enthusiast',
-    bio: 'Passionate about simplifying complex concepts in machine learning for the masses.',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=1974',
+    name: 'Satish Kumar',
+    role: 'Content Writer',
+    bio: 'Focused on building premium articles and exploring Content Writing.',
+    image: '/images/satish-pic.jpeg',
     socials: {
-      github: 'https://github.com',
-      linkedin: 'https://linkedin.com',
-      instagram: 'https://instagram.com'
+      // github: 'https://github.com',
+      // linkedin: 'https://linkedin.com',
+      instagram: 'https://instagram.com/satishmoriya361'
     }
   },
   {
