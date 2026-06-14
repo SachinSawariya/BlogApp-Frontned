@@ -20,14 +20,17 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   let initialFeatured: any[] = [];
   let initialCategories: any[] = [];
 
   try {
     const [featuredRes, categoriesRes] = await Promise.allSettled([
-      commonApi({ action: "getFeaturedArticles" }),
-      commonApi({ action: "getTopCategories" }),
+      commonApi({ action: "getFeaturedArticles", config: { cache: "no-store" } }),
+      commonApi({ action: "getTopCategories", config: { cache: "no-store" } }),
     ]);
 
     if (featuredRes.status === "fulfilled") {
